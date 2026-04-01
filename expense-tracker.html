@@ -1,0 +1,355 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>مُفكّرة المصاريف | Expense Notebook</title>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Kufi+Arabic:wght@300;400;500;600;700&family=DM+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+  <!-- Background effects -->
+  <div class="noise-overlay"></div>
+  <div class="glow-orb-1"></div>
+  <div class="glow-orb-2"></div>
+
+  <!-- ===== LOGIN PAGE ===== -->
+  <div id="page-login" class="auth-wrapper">
+    <div class="auth-card">
+      <div style="text-align:center; margin-bottom:36px">
+        <div class="auth-logo">💰</div>
+        <h1 class="auth-title" data-ar="مُفكّرة المصاريف" data-en="Expense Notebook">مُفكّرة المصاريف</h1>
+        <p class="auth-sub" data-ar="سجّل مصاريفك وتابع ميزانيتك" data-en="Track your expenses and budget">سجّل مصاريفك وتابع ميزانيتك</p>
+      </div>
+
+      <div style="display:flex; flex-direction:column; gap:16px">
+        <div>
+          <label class="form-label" data-ar="البريد الإلكتروني" data-en="Email">البريد الإلكتروني</label>
+          <input type="email" class="form-input" placeholder="example@email.com">
+        </div>
+        <div>
+          <label class="form-label" data-ar="كلمة المرور" data-en="Password">كلمة المرور</label>
+          <input type="password" class="form-input" placeholder="••••••••">
+        </div>
+        <button class="btn btn-accent" style="margin-top:8px" onclick="showPage('dashboard')" data-ar="تسجيل الدخول" data-en="Sign In">تسجيل الدخول</button>
+      </div>
+
+      <p style="text-align:center; margin-top:24px; font-size:14px; color:var(--text-dim)">
+        <span data-ar="ما عندك حساب؟" data-en="Don't have an account?">ما عندك حساب؟</span>
+        <span class="link" onclick="showPage('register')" data-ar="سجّل الآن" data-en="Register">سجّل الآن</span>
+      </p>
+    </div>
+  </div>
+
+  <!-- ===== REGISTER PAGE ===== -->
+  <div id="page-register" class="auth-wrapper hidden">
+    <div class="auth-card">
+      <div style="text-align:center; margin-bottom:32px">
+        <h1 class="auth-title" data-ar="إنشاء حساب جديد" data-en="Create Account">إنشاء حساب جديد</h1>
+        <p class="auth-sub" data-ar="ابدأ بتتبع مصاريفك اليوم" data-en="Start tracking your expenses today">ابدأ بتتبع مصاريفك اليوم</p>
+      </div>
+
+      <div style="display:flex; flex-direction:column; gap:14px">
+        <div>
+          <label class="form-label" data-ar="الاسم الكامل" data-en="Full Name">الاسم الكامل</label>
+          <input type="text" class="form-input" data-ph-ar="محمد أحمد" data-ph-en="Mohammed Ahmed" placeholder="محمد أحمد">
+        </div>
+        <div>
+          <label class="form-label" data-ar="البريد الإلكتروني" data-en="Email">البريد الإلكتروني</label>
+          <input type="email" class="form-input" placeholder="example@email.com">
+        </div>
+        <div>
+          <label class="form-label" data-ar="كلمة المرور" data-en="Password">كلمة المرور</label>
+          <input type="password" class="form-input" placeholder="••••••••">
+        </div>
+        <div>
+          <label class="form-label" data-ar="تأكيد كلمة المرور" data-en="Confirm Password">تأكيد كلمة المرور</label>
+          <input type="password" class="form-input" placeholder="••••••••">
+        </div>
+        <button class="btn btn-green" style="margin-top:4px" onclick="showPage('dashboard')" data-ar="إنشاء الحساب" data-en="Create Account">إنشاء الحساب</button>
+      </div>
+
+      <p style="text-align:center; margin-top:20px; font-size:14px; color:var(--text-dim)">
+        <span data-ar="عندك حساب؟" data-en="Already have an account?">عندك حساب؟</span>
+        <span class="link" onclick="showPage('login')" data-ar="سجّل دخول" data-en="Sign In">سجّل دخول</span>
+      </p>
+    </div>
+  </div>
+
+  <!-- ===== APP LAYOUT ===== -->
+  <div id="app-layout" class="app-layout hidden">
+
+    <!-- SIDEBAR -->
+    <aside class="sidebar">
+      <div class="sidebar-logo">
+        <div class="sidebar-logo-icon">💰</div>
+        <span class="sidebar-logo-text" data-ar="مُفكّرة" data-en="Notebook">مُفكّرة</span>
+      </div>
+
+      <!-- Navigation menu -->
+      <nav class="nav-menu">
+        <button class="nav-item active" data-page="dashboard" onclick="showPage('dashboard')">
+          <span class="nav-item-icon">📊</span>
+          <span data-ar="لوحة التحكم" data-en="Dashboard">لوحة التحكم</span>
+        </button>
+        <button class="nav-item" data-page="add-expense" onclick="showPage('add-expense')">
+          <span class="nav-item-icon">➖</span>
+          <span data-ar="إضافة مصروف" data-en="Add Expense">إضافة مصروف</span>
+        </button>
+        <button class="nav-item" data-page="add-income" onclick="showPage('add-income')">
+          <span class="nav-item-icon">➕</span>
+          <span data-ar="إضافة دخل" data-en="Add Income">إضافة دخل</span>
+        </button>
+        <button class="nav-item" data-page="categories" onclick="showPage('categories')">
+          <span class="nav-item-icon">📁</span>
+          <span data-ar="التصنيفات" data-en="Categories">التصنيفات</span>
+        </button>
+        <button class="nav-item" data-page="reports" onclick="showPage('reports')">
+          <span class="nav-item-icon">📈</span>
+          <span data-ar="التقارير" data-en="Reports">التقارير</span>
+        </button>
+        <button class="nav-item" data-page="settings" onclick="showPage('settings')">
+          <span class="nav-item-icon">⚙️</span>
+          <span data-ar="الإعدادات" data-en="Settings">الإعدادات</span>
+        </button>
+      </nav>
+
+      <!-- Sidebar footer -->
+      <div class="sidebar-bottom">
+        <button class="btn-logout" onclick="showPage('login')">
+          <span>🚪</span>
+          <span data-ar="تسجيل خروج" data-en="Sign Out">تسجيل خروج</span>
+        </button>
+      </div>
+    </aside>
+
+    <!-- MAIN CONTENT -->
+    <main class="main-content">
+
+      <!-- DASHBOARD SECTION -->
+      <div id="sec-dashboard">
+        <div class="page-header">
+          <div>
+            <h1 class="page-title" data-ar="مرحباً، محمد 👋" data-en="Hello, Mohammed 👋">مرحباً، محمد 👋</h1>
+            <p class="page-sub" data-ar="ملخص مصاريفك لهذا الشهر" data-en="Your expense summary this month">ملخص مصاريفك لهذا الشهر</p>
+          </div>
+          <button class="btn-lang" onclick="toggleLang()">EN</button>
+        </div>
+
+        <!-- Summary stat cards -->
+        <div class="stats-row">
+          <div class="stat-card">
+            <div class="stat-header">
+              <span class="stat-label" data-ar="إجمالي الدخل" data-en="Total Income">إجمالي الدخل</span>
+              <div class="stat-icon" style="background:linear-gradient(135deg,var(--green),var(--green-dark));box-shadow:0 4px 15px rgba(16,185,129,0.2)">💰</div>
+            </div>
+            <div class="stat-value">9,500 <span class="stat-currency" data-ar="ر.س" data-en="SAR">ر.س</span></div>
+            <div class="stat-sub" data-ar="مصدرين للدخل" data-en="2 income sources">مصدرين للدخل</div>
+          </div>
+
+          <div class="stat-card">
+            <div class="stat-header">
+              <span class="stat-label" data-ar="إجمالي المصروفات" data-en="Total Expenses">إجمالي المصروفات</span>
+              <div class="stat-icon" style="background:linear-gradient(135deg,var(--red),var(--red-dark));box-shadow:0 4px 15px rgba(239,68,68,0.2)">💸</div>
+            </div>
+            <div class="stat-value">1,295 <span class="stat-currency" data-ar="ر.س" data-en="SAR">ر.س</span></div>
+            <div class="stat-sub" data-ar="6 عمليات هذا الشهر" data-en="6 transactions this month">6 عمليات هذا الشهر</div>
+          </div>
+
+          <div class="stat-card">
+            <div class="stat-header">
+              <span class="stat-label" data-ar="الرصيد المتبقي" data-en="Remaining Balance">الرصيد المتبقي</span>
+              <div class="stat-icon" style="background:linear-gradient(135deg,var(--accent),var(--accent-dark));box-shadow:0 4px 15px rgba(99,102,241,0.2)">📊</div>
+            </div>
+            <div class="stat-value">8,205 <span class="stat-currency" data-ar="ر.س" data-en="SAR">ر.س</span></div>
+          </div>
+        </div>
+
+        <!-- Charts row -->
+        <div class="charts-row">
+
+          <!-- Weekly bar chart -->
+          <div class="card chart-main">
+            <h3 class="card-title" data-ar="المصاريف الأسبوعية" data-en="Weekly Expenses">المصاريف الأسبوعية</h3>
+            <div class="bar-chart">
+              <div class="bar-col"><span class="bar-value">200</span><div class="bar" style="height:62px"></div><span class="bar-label" data-ar="سبت" data-en="Sat">سبت</span></div>
+              <div class="bar-col"><span class="bar-value">150</span><div class="bar" style="height:47px"></div><span class="bar-label" data-ar="أحد" data-en="Sun">أحد</span></div>
+              <div class="bar-col"><span class="bar-value">320</span><div class="bar highlight" style="height:100px"></div><span class="bar-label" data-ar="اثنين" data-en="Mon">اثنين</span></div>
+              <div class="bar-col"><span class="bar-value">80</span><div class="bar" style="height:25px"></div><span class="bar-label" data-ar="ثلاثاء" data-en="Tue">ثلاثاء</span></div>
+              <div class="bar-col"><span class="bar-value">250</span><div class="bar" style="height:78px"></div><span class="bar-label" data-ar="أربعاء" data-en="Wed">أربعاء</span></div>
+              <div class="bar-col"><span class="bar-value">195</span><div class="bar" style="height:61px"></div><span class="bar-label" data-ar="خميس" data-en="Thu">خميس</span></div>
+              <div class="bar-col"><span class="bar-value">100</span><div class="bar" style="height:31px"></div><span class="bar-label" data-ar="جمعة" data-en="Fri">جمعة</span></div>
+            </div>
+          </div>
+
+          <!-- Category breakdown -->
+          <div class="card chart-side">
+            <h3 class="card-title" data-ar="حسب التصنيف" data-en="By Category">حسب التصنيف</h3>
+            <div class="cat-row"><span class="cat-icon">🍽️</span><div class="cat-info"><div class="cat-header"><span class="cat-name" data-ar="طعام" data-en="Food">طعام</span><span class="cat-amount">150 <span data-ar="ر.س" data-en="SAR">ر.س</span></span></div><div class="progress-bg"><div class="progress-fill" style="width:11.6%;background:#e8634a"></div></div></div></div>
+            <div class="cat-row"><span class="cat-icon">🚗</span><div class="cat-info"><div class="cat-header"><span class="cat-name" data-ar="مواصلات" data-en="Transport">مواصلات</span><span class="cat-amount">45 <span data-ar="ر.س" data-en="SAR">ر.س</span></span></div><div class="progress-bg"><div class="progress-fill" style="width:3.5%;background:#4a90d9"></div></div></div></div>
+            <div class="cat-row"><span class="cat-icon">🛍️</span><div class="cat-info"><div class="cat-header"><span class="cat-name" data-ar="تسوق" data-en="Shopping">تسوق</span><span class="cat-amount">320 <span data-ar="ر.س" data-en="SAR">ر.س</span></span></div><div class="progress-bg"><div class="progress-fill" style="width:24.7%;background:#d94a8c"></div></div></div></div>
+            <div class="cat-row"><span class="cat-icon">📄</span><div class="cat-info"><div class="cat-header"><span class="cat-name" data-ar="فواتير" data-en="Bills">فواتير</span><span class="cat-amount">500 <span data-ar="ر.س" data-en="SAR">ر.س</span></span></div><div class="progress-bg"><div class="progress-fill" style="width:38.6%;background:#e8a94a"></div></div></div></div>
+            <div class="cat-row"><span class="cat-icon">🎬</span><div class="cat-info"><div class="cat-header"><span class="cat-name" data-ar="ترفيه" data-en="Entertainment">ترفيه</span><span class="cat-amount">80 <span data-ar="ر.س" data-en="SAR">ر.س</span></span></div><div class="progress-bg"><div class="progress-fill" style="width:6.2%;background:#9b59b6"></div></div></div></div>
+          </div>
+        </div>
+
+        <!-- Recent transactions -->
+        <div class="card tx-list">
+          <h3 class="card-title" data-ar="آخر العمليات" data-en="Recent Transactions">آخر العمليات</h3>
+          <div class="tx-item"><div class="tx-icon-wrap" style="background:rgba(232,99,74,0.1)">🍽️</div><div class="tx-info"><div class="tx-cat" data-ar="طعام" data-en="Food">طعام</div><div class="tx-detail" data-ar="غداء مطعم • 2026-03-09 12:30" data-en="Restaurant lunch • 2026-03-09 12:30">غداء مطعم • 2026-03-09 12:30</div></div><div class="tx-amount">-150 <span data-ar="ر.س" data-en="SAR">ر.س</span></div></div>
+          <div class="tx-item"><div class="tx-icon-wrap" style="background:rgba(74,144,217,0.1)">🚗</div><div class="tx-info"><div class="tx-cat" data-ar="مواصلات" data-en="Transport">مواصلات</div><div class="tx-detail" data-ar="أوبر للدوام • 2026-03-09 08:15" data-en="Uber to work • 2026-03-09 08:15">أوبر للدوام • 2026-03-09 08:15</div></div><div class="tx-amount">-45 <span data-ar="ر.س" data-en="SAR">ر.س</span></div></div>
+          <div class="tx-item"><div class="tx-icon-wrap" style="background:rgba(217,74,140,0.1)">🛍️</div><div class="tx-info"><div class="tx-cat" data-ar="تسوق" data-en="Shopping">تسوق</div><div class="tx-detail" data-ar="ملابس • 2026-03-08 16:00" data-en="Clothes • 2026-03-08 16:00">ملابس • 2026-03-08 16:00</div></div><div class="tx-amount">-320 <span data-ar="ر.س" data-en="SAR">ر.س</span></div></div>
+          <div class="tx-item"><div class="tx-icon-wrap" style="background:rgba(232,169,74,0.1)">📄</div><div class="tx-info"><div class="tx-cat" data-ar="فواتير" data-en="Bills">فواتير</div><div class="tx-detail" data-ar="كهرباء • 2026-03-07 10:00" data-en="Electricity • 2026-03-07 10:00">كهرباء • 2026-03-07 10:00</div></div><div class="tx-amount">-500 <span data-ar="ر.س" data-en="SAR">ر.س</span></div></div>
+          <div class="tx-item"><div class="tx-icon-wrap" style="background:rgba(155,89,182,0.1)">🎬</div><div class="tx-info"><div class="tx-cat" data-ar="ترفيه" data-en="Entertainment">ترفيه</div><div class="tx-detail" data-ar="سينما • 2026-03-07 20:00" data-en="Cinema • 2026-03-07 20:00">سينما • 2026-03-07 20:00</div></div><div class="tx-amount">-80 <span data-ar="ر.س" data-en="SAR">ر.س</span></div></div>
+        </div>
+      </div>
+
+      <!-- ADD EXPENSE SECTION -->
+      <div id="sec-add-expense" class="form-page hidden">
+        <h2 class="page-title" data-ar="إضافة مصروف جديد" data-en="Add New Expense">إضافة مصروف جديد</h2>
+        <p class="page-sub" style="margin-bottom:28px" data-ar="سجّل مصروفك مع التفاصيل" data-en="Record your expense with details">سجّل مصروفك مع التفاصيل</p>
+
+        <!-- Category selector -->
+        <div class="form-group">
+          <label class="form-label" data-ar="التصنيف" data-en="Category">التصنيف</label>
+          <div class="category-grid">
+            <button class="cat-btn selected" style="border-color:#e8634a;color:#e8634a;background:rgba(232,99,74,0.08)"><span>🍽️</span><span data-ar="طعام" data-en="Food">طعام</span></button>
+            <button class="cat-btn"><span>🚗</span><span data-ar="مواصلات" data-en="Transport">مواصلات</span></button>
+            <button class="cat-btn"><span>🛍️</span><span data-ar="تسوق" data-en="Shopping">تسوق</span></button>
+            <button class="cat-btn"><span>📄</span><span data-ar="فواتير" data-en="Bills">فواتير</span></button>
+            <button class="cat-btn"><span>🎬</span><span data-ar="ترفيه" data-en="Entertainment">ترفيه</span></button>
+            <button class="cat-btn"><span>💊</span><span data-ar="صحة" data-en="Health">صحة</span></button>
+            <button class="cat-btn"><span>📚</span><span data-ar="تعليم" data-en="Education">تعليم</span></button>
+            <button class="cat-btn"><span>📌</span><span data-ar="أخرى" data-en="Other">أخرى</span></button>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label" data-ar="المبلغ" data-en="Amount">المبلغ</label>
+          <input type="number" class="form-input" placeholder="0.00">
+        </div>
+
+        <div class="form-group">
+          <label class="form-label" data-ar="الملاحظة" data-en="Note">الملاحظة</label>
+          <input type="text" class="form-input" data-ph-ar="وصف المصروف..." data-ph-en="Expense description..." placeholder="وصف المصروف...">
+        </div>
+
+        <div class="form-group form-row">
+          <div>
+            <label class="form-label" data-ar="التاريخ" data-en="Date">التاريخ</label>
+            <input type="date" class="form-input">
+          </div>
+          <div>
+            <label class="form-label" data-ar="الوقت" data-en="Time">الوقت</label>
+            <input type="time" class="form-input">
+          </div>
+        </div>
+
+        <button class="btn btn-red" style="margin-top:8px" data-ar="➖ حفظ المصروف" data-en="➖ Save Expense">➖ حفظ المصروف</button>
+      </div>
+
+      <!-- ADD INCOME SECTION -->
+      <div id="sec-add-income" class="form-page hidden">
+        <h2 class="page-title" data-ar="إضافة دخل جديد" data-en="Add New Income">إضافة دخل جديد</h2>
+        <p class="page-sub" style="margin-bottom:28px" data-ar="سجّل دخلك الجديد" data-en="Record your new income">سجّل دخلك الجديد</p>
+
+        <div class="form-group">
+          <label class="form-label" data-ar="المصدر" data-en="Source">المصدر</label>
+          <input type="text" class="form-input" data-ph-ar="مثال: راتب، عمل حر..." data-ph-en="e.g., Salary, Freelance..." placeholder="مثال: راتب، عمل حر...">
+        </div>
+        <div class="form-group">
+          <label class="form-label" data-ar="المبلغ" data-en="Amount">المبلغ</label>
+          <input type="number" class="form-input" placeholder="0.00">
+        </div>
+        <div class="form-group">
+          <label class="form-label" data-ar="التاريخ" data-en="Date">التاريخ</label>
+          <input type="date" class="form-input">
+        </div>
+        <div class="form-group">
+          <label class="form-label" data-ar="ملاحظات" data-en="Notes">ملاحظات</label>
+          <input type="text" class="form-input" data-ph-ar="ملاحظات إضافية..." data-ph-en="Additional notes..." placeholder="ملاحظات إضافية...">
+        </div>
+
+        <button class="btn btn-green" style="margin-top:8px" data-ar="➕ حفظ الدخل" data-en="➕ Save Income">➕ حفظ الدخل</button>
+
+        <!-- Recorded income list -->
+        <div style="margin-top:28px">
+          <h3 style="font-size:15px;color:var(--text-muted);margin-bottom:12px" data-ar="الدخل المسجّل" data-en="Recorded Income">الدخل المسجّل</h3>
+          <div class="income-item">
+            <div>
+              <div class="income-source" data-ar="راتب" data-en="Salary">راتب</div>
+              <div class="income-date">2026-03-01</div>
+            </div>
+            <div class="income-amount">+8,000 <span data-ar="ر.س" data-en="SAR">ر.س</span></div>
+          </div>
+          <div class="income-item">
+            <div>
+              <div class="income-source" data-ar="عمل حر" data-en="Freelance">عمل حر</div>
+              <div class="income-date">2026-03-05</div>
+            </div>
+            <div class="income-amount">+1,500 <span data-ar="ر.س" data-en="SAR">ر.س</span></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- CATEGORIES SECTION -->
+      <div id="sec-categories" class="hidden">
+        <div class="categories-header">
+          <h2 class="page-title" data-ar="تصنيفات المصاريف" data-en="Expense Categories">تصنيفات المصاريف</h2>
+          <button class="btn-outline" data-ar="+ تصنيف جديد" data-en="+ New Category">+ تصنيف جديد</button>
+        </div>
+        <div class="categories-grid">
+          <div class="category-card" style="border-top:3px solid #e8634a"><div class="category-card-icon">🍽️</div><div class="category-card-name" data-ar="طعام" data-en="Food">طعام</div><div class="category-card-info"><span data-ar="1 عمليات" data-en="1 transactions">1 عمليات</span> • 150 <span data-ar="ر.س" data-en="SAR">ر.س</span></div></div>
+          <div class="category-card" style="border-top:3px solid #4a90d9"><div class="category-card-icon">🚗</div><div class="category-card-name" data-ar="مواصلات" data-en="Transport">مواصلات</div><div class="category-card-info"><span data-ar="1 عمليات" data-en="1 transactions">1 عمليات</span> • 45 <span data-ar="ر.س" data-en="SAR">ر.س</span></div></div>
+          <div class="category-card" style="border-top:3px solid #d94a8c"><div class="category-card-icon">🛍️</div><div class="category-card-name" data-ar="تسوق" data-en="Shopping">تسوق</div><div class="category-card-info"><span data-ar="1 عمليات" data-en="1 transactions">1 عمليات</span> • 320 <span data-ar="ر.س" data-en="SAR">ر.س</span></div></div>
+          <div class="category-card" style="border-top:3px solid #e8a94a"><div class="category-card-icon">📄</div><div class="category-card-name" data-ar="فواتير" data-en="Bills">فواتير</div><div class="category-card-info"><span data-ar="1 عمليات" data-en="1 transactions">1 عمليات</span> • 500 <span data-ar="ر.س" data-en="SAR">ر.س</span></div></div>
+          <div class="category-card" style="border-top:3px solid #9b59b6"><div class="category-card-icon">🎬</div><div class="category-card-name" data-ar="ترفيه" data-en="Entertainment">ترفيه</div><div class="category-card-info"><span data-ar="1 عمليات" data-en="1 transactions">1 عمليات</span> • 80 <span data-ar="ر.س" data-en="SAR">ر.س</span></div></div>
+          <div class="category-card" style="border-top:3px solid #2ecc71"><div class="category-card-icon">💊</div><div class="category-card-name" data-ar="صحة" data-en="Health">صحة</div><div class="category-card-info"><span data-ar="1 عمليات" data-en="1 transactions">1 عمليات</span> • 200 <span data-ar="ر.س" data-en="SAR">ر.س</span></div></div>
+          <div class="category-card" style="border-top:3px solid #1abc9c"><div class="category-card-icon">📚</div><div class="category-card-name" data-ar="تعليم" data-en="Education">تعليم</div><div class="category-card-info"><span data-ar="0 عمليات" data-en="0 transactions">0 عمليات</span> • 0 <span data-ar="ر.س" data-en="SAR">ر.س</span></div></div>
+          <div class="category-card" style="border-top:3px solid #95a5a6"><div class="category-card-icon">📌</div><div class="category-card-name" data-ar="أخرى" data-en="Other">أخرى</div><div class="category-card-info"><span data-ar="0 عمليات" data-en="0 transactions">0 عمليات</span> • 0 <span data-ar="ر.س" data-en="SAR">ر.س</span></div></div>
+        </div>
+      </div>
+
+      <!-- REPORTS SECTION -->
+      <div id="sec-reports" class="hidden">
+        <h2 class="page-title" style="margin-bottom:28px" data-ar="التقارير والإحصائيات" data-en="Reports & Statistics">التقارير والإحصائيات</h2>
+        <div class="charts-row">
+
+          <!-- Monthly expenses chart -->
+          <div class="card chart-main">
+            <h3 class="card-title" data-ar="المصاريف الشهرية" data-en="Monthly Expenses">المصاريف الشهرية</h3>
+            <div class="monthly-bar"><div class="monthly-header"><span class="monthly-name" data-ar="يناير" data-en="Jan">يناير</span><span class="monthly-val">2,800 <span data-ar="ر.س" data-en="SAR">ر.س</span></span></div><div class="monthly-bg"><div class="monthly-fill" style="width:87.5%;background:linear-gradient(90deg,rgba(99,102,241,0.4),rgba(99,102,241,0.2))"></div></div></div>
+            <div class="monthly-bar"><div class="monthly-header"><span class="monthly-name" data-ar="فبراير" data-en="Feb">فبراير</span><span class="monthly-val">3,200 <span data-ar="ر.س" data-en="SAR">ر.س</span></span></div><div class="monthly-bg"><div class="monthly-fill" style="width:100%;background:linear-gradient(90deg,rgba(99,102,241,0.4),rgba(99,102,241,0.2))"></div></div></div>
+            <div class="monthly-bar"><div class="monthly-header"><span class="monthly-name" data-ar="مارس" data-en="Mar">مارس</span><span class="monthly-val">1,295 <span data-ar="ر.س" data-en="SAR">ر.س</span></span></div><div class="monthly-bg"><div class="monthly-fill" style="width:40.5%;background:linear-gradient(90deg,var(--accent),#818cf8)"></div></div></div>
+          </div>
+
+          <!-- Quick summary -->
+          <div class="card chart-side">
+            <h3 class="card-title" data-ar="ملخص سريع" data-en="Quick Summary">ملخص سريع</h3>
+            <div class="summary-item"><div><div class="summary-label" data-ar="أعلى مصروف" data-en="Highest Expense">أعلى مصروف</div><div class="summary-sub" data-ar="فواتير" data-en="Bills">فواتير</div></div><div class="summary-value" style="color:var(--red)">500 <span data-ar="ر.س" data-en="SAR">ر.س</span></div></div>
+            <div class="summary-item"><div><div class="summary-label" data-ar="أقل مصروف" data-en="Lowest Expense">أقل مصروف</div><div class="summary-sub" data-ar="مواصلات" data-en="Transport">مواصلات</div></div><div class="summary-value" style="color:var(--green)">45 <span data-ar="ر.س" data-en="SAR">ر.س</span></div></div>
+            <div class="summary-item"><div><div class="summary-label" data-ar="متوسط يومي" data-en="Daily Average">متوسط يومي</div><div class="summary-sub" data-ar="7 أيام" data-en="7 days">7 أيام</div></div><div class="summary-value" style="color:var(--accent)">185 <span data-ar="ر.س" data-en="SAR">ر.س</span></div></div>
+            <div class="summary-item"><div><div class="summary-label" data-ar="عدد العمليات" data-en="Transactions">عدد العمليات</div><div class="summary-sub" data-ar="هذا الشهر" data-en="This month">هذا الشهر</div></div><div class="summary-value" style="color:var(--yellow)">6</div></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- SETTINGS SECTION -->
+      <div id="sec-settings" class="form-page hidden">
+        <h2 class="page-title" style="margin-bottom:28px" data-ar="الإعدادات" data-en="Settings">الإعدادات</h2>
+        <div class="setting-row"><span class="setting-label" data-ar="الاسم" data-en="Name">الاسم</span><span class="setting-value" data-ar="محمد أحمد" data-en="Mohammed Ahmed">محمد أحمد</span></div>
+        <div class="setting-row"><span class="setting-label" data-ar="البريد الإلكتروني" data-en="Email">البريد الإلكتروني</span><span class="setting-value">mohammed@example.com</span></div>
+        <div class="setting-row"><span class="setting-label" data-ar="العملة" data-en="Currency">العملة</span><span class="setting-value" data-ar="ريال سعودي (ر.س)" data-en="Saudi Riyal (SAR)">ريال سعودي (ر.س)</span></div>
+        <div class="setting-row"><span class="setting-label" data-ar="اللغة" data-en="Language">اللغة</span><button class="btn-lang" onclick="toggleLang()" data-ar="English" data-en="عربي">English</button></div>
+      </div>
+
+    </main>
+  </div>
+
+  <!-- ===== JAVASCRIPT ===== -->
+  <script src="script.js"></script>
+
+
+</body>
+</html>
