@@ -105,6 +105,15 @@
           <span class="nav-item-icon">📁</span>
           <span data-ar="التصنيفات" data-en="Categories">التصنيفات</span>
         </button>
+        <button class="nav-item" data-page="goals" onclick="showPage('goals')">
+          <span class="nav-item-icon">🎯</span>
+          <span data-ar="الأهداف المالية" data-en="Financial Goals">الأهداف المالية</span>
+        </button>
+        <button class="nav-item" data-page="subscriptions" onclick="showPage('subscriptions')">
+          <span class="nav-item-icon">🔄</span>
+          <span data-ar="الاشتراكات" data-en="Subscriptions">الاشتراكات</span>
+          <span class="nav-badge" id="sub-badge-count">2</span>
+        </button>
         <button class="nav-item" data-page="reports" onclick="showPage('reports')">
           <span class="nav-item-icon">📈</span>
           <span data-ar="التقارير" data-en="Reports">التقارير</span>
@@ -128,35 +137,34 @@
     <main class="main-content">
 
       <!-- DASHBOARD SECTION -->
+      <!-- DASHBOARD / HOME SECTION -->
       <div id="sec-dashboard">
         <div class="page-header">
           <div>
             <h1 class="page-title" data-ar="مرحباً، محمد 👋" data-en="Hello, Mohammed 👋">مرحباً، محمد 👋</h1>
-            <p class="page-sub" data-ar="ملخص مصاريفك لهذا الشهر" data-en="Your expense summary this month">ملخص مصاريفك لهذا الشهر</p>
+            <p class="page-sub" data-ar="ملخص شامل لحالتك المالية" data-en="Complete overview of your finances">ملخص شامل لحالتك المالية</p>
           </div>
           <button class="btn-lang" onclick="toggleLang()">EN</button>
         </div>
 
         <!-- Summary stat cards -->
         <div class="stats-row">
-          <div class="stat-card">
+          <div class="stat-card" style="cursor:pointer" onclick="showPage('add-income')">
             <div class="stat-header">
               <span class="stat-label" data-ar="إجمالي الدخل" data-en="Total Income">إجمالي الدخل</span>
               <div class="stat-icon" style="background:linear-gradient(135deg,var(--green),var(--green-dark));box-shadow:0 4px 15px rgba(16,185,129,0.2)">💰</div>
             </div>
             <div class="stat-value">9,500 <span class="stat-currency" data-ar="ر.س" data-en="SAR">ر.س</span></div>
-            <div class="stat-sub" data-ar="مصدرين للدخل" data-en="2 income sources">مصدرين للدخل</div>
+            <div class="stat-sub" data-ar="اضغط لإضافة دخل ←" data-en="Click to add income →">اضغط لإضافة دخل ←</div>
           </div>
-
-          <div class="stat-card">
+          <div class="stat-card" style="cursor:pointer" onclick="showPage('add-expense')">
             <div class="stat-header">
               <span class="stat-label" data-ar="إجمالي المصروفات" data-en="Total Expenses">إجمالي المصروفات</span>
               <div class="stat-icon" style="background:linear-gradient(135deg,var(--red),var(--red-dark));box-shadow:0 4px 15px rgba(239,68,68,0.2)">💸</div>
             </div>
             <div class="stat-value">1,295 <span class="stat-currency" data-ar="ر.س" data-en="SAR">ر.س</span></div>
-            <div class="stat-sub" data-ar="6 عمليات هذا الشهر" data-en="6 transactions this month">6 عمليات هذا الشهر</div>
+            <div class="stat-sub" data-ar="اضغط لإضافة مصروف ←" data-en="Click to add expense →">اضغط لإضافة مصروف ←</div>
           </div>
-
           <div class="stat-card">
             <div class="stat-header">
               <span class="stat-label" data-ar="الرصيد المتبقي" data-en="Remaining Balance">الرصيد المتبقي</span>
@@ -166,12 +174,93 @@
           </div>
         </div>
 
-        <!-- Charts row -->
-        <div class="charts-row">
+        <!-- SMART REMINDERS -->
+        <div class="reminders-section" id="reminders-container">
+          <div class="reminder-card warning" id="reminder-limit">
+            <div class="reminder-icon">⚠️</div>
+            <div class="reminder-content">
+              <div class="reminder-title" data-ar="تنبيه حد الإنفاق" data-en="Spending Limit Alert">تنبيه حد الإنفاق</div>
+              <div class="reminder-desc" data-ar="وصلت إلى 86% من حد الإنفاق الشهري (1,295 من 1,500 ر.س)" data-en="You've reached 86% of your monthly spending limit (1,295 of 1,500 SAR)">وصلت إلى 86% من حد الإنفاق الشهري (1,295 من 1,500 ر.س)</div>
+            </div>
+            <button class="reminder-dismiss" onclick="this.closest('.reminder-card').remove()">✕</button>
+          </div>
+          <div class="reminder-card info" id="reminder-bill">
+            <div class="reminder-icon">📄</div>
+            <div class="reminder-content">
+              <div class="reminder-title" data-ar="فاتورة قادمة" data-en="Upcoming Bill">فاتورة قادمة</div>
+              <div class="reminder-desc" data-ar="فاتورة الإنترنت (350 ر.س) مستحقة خلال 3 أيام" data-en="Internet bill (350 SAR) is due in 3 days">فاتورة الإنترنت (350 ر.س) مستحقة خلال 3 أيام</div>
+            </div>
+            <button class="reminder-dismiss" onclick="this.closest('.reminder-card').remove()">✕</button>
+          </div>
+        </div>
 
-          <!-- Weekly bar chart -->
+        <!-- SPENDING LIMIT -->
+        <div class="spending-limit-card" id="spending-limit-section">
+          <div class="limit-header">
+            <h3 class="card-title" style="margin-bottom:0" data-ar="حد الإنفاق الشهري" data-en="Monthly Spending Limit">حد الإنفاق الشهري</h3>
+            <button class="limit-edit-btn" onclick="openModal('limit-modal')" data-ar="✏️ تعديل" data-en="✏️ Edit">✏️ تعديل</button>
+          </div>
+          <div class="limit-visual">
+            <div class="limit-circle">
+              <svg width="100" height="100" viewBox="0 0 100 100">
+                <circle class="limit-circle-bg" cx="50" cy="50" r="42"/>
+                <circle class="limit-circle-fill" id="limit-circle-progress" cx="50" cy="50" r="42" stroke-dasharray="263.9" stroke-dashoffset="37" stroke="#EAB308"/>
+              </svg>
+              <div class="limit-circle-text">
+                <div class="limit-pct" id="limit-pct-text">86%</div>
+                <div class="limit-pct-label" data-ar="مستخدم" data-en="used">مستخدم</div>
+              </div>
+            </div>
+            <div class="limit-details">
+              <div class="limit-spent-row"><span class="limit-spent-label" data-ar="المصروف" data-en="Spent">المصروف</span><span class="limit-spent-val">1,295 <span data-ar="ر.س" data-en="SAR">ر.س</span></span></div>
+              <div class="limit-spent-row"><span class="limit-spent-label" data-ar="الحد" data-en="Limit">الحد</span><span class="limit-spent-val">1,500 <span data-ar="ر.س" data-en="SAR">ر.س</span></span></div>
+              <div class="limit-spent-row"><span class="limit-spent-label" data-ar="المتبقي" data-en="Remaining">المتبقي</span><span class="limit-spent-val" style="color:var(--green)">205 <span data-ar="ر.س" data-en="SAR">ر.س</span></span></div>
+            </div>
+          </div>
+          <div class="limit-alert warning" id="limit-alert-box">
+            <span class="limit-alert-icon">⚠️</span>
+            <span data-ar="تجاوزت 80% من حد الإنفاق! حاول تقلل المصاريف باقي الشهر" data-en="You\'ve exceeded 80% of your limit! Try to reduce spending for the rest of the month">تجاوزت 80% من حد الإنفاق! حاول تقلل المصاريف باقي الشهر</span>
+          </div>
+        </div>
+
+        <!-- SUMMARIES ROW: Goals + Subscriptions -->
+        <div class="charts-row" style="margin-top:20px">
+          <!-- GOALS SUMMARY -->
+          <div class="card chart-main" style="cursor:pointer" onclick="showPage('goals')">
+            <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:16px">
+              <h3 class="card-title" style="margin-bottom:0" data-ar="🎯 الأهداف المالية" data-en="🎯 Financial Goals">🎯 الأهداف المالية</h3>
+              <span class="link" style="font-size:13px" data-ar="عرض الكل ←" data-en="View all →">عرض الكل ←</span>
+            </div>
+            <div style="display:flex;flex-direction:column;gap:12px">
+              <div><div style="display:flex;justify-content:space-between;margin-bottom:4px"><span style="font-size:13px;color:var(--text-secondary)">🏠 <span data-ar="صندوق الطوارئ" data-en="Emergency Fund">صندوق الطوارئ</span></span><span style="font-size:13px;color:var(--green);font-weight:600">60%</span></div><div class="progress-bg"><div class="progress-fill" style="width:60%;background:linear-gradient(90deg,var(--green),var(--green-dark))"></div></div></div>
+              <div><div style="display:flex;justify-content:space-between;margin-bottom:4px"><span style="font-size:13px;color:var(--text-secondary)">💻 <span data-ar="لابتوب جديد" data-en="New Laptop">لابتوب جديد</span></span><span style="font-size:13px;color:var(--accent);font-weight:600">56%</span></div><div class="progress-bg"><div class="progress-fill" style="width:56%;background:linear-gradient(90deg,var(--accent),var(--accent-dark))"></div></div></div>
+              <div><div style="display:flex;justify-content:space-between;margin-bottom:4px"><span style="font-size:13px;color:var(--text-secondary)">✈️ <span data-ar="رحلة سياحية" data-en="Travel Trip">رحلة سياحية</span></span><span style="font-size:13px;color:#EAB308;font-weight:600">12.5%</span></div><div class="progress-bg"><div class="progress-fill" style="width:12.5%;background:linear-gradient(90deg,#EAB308,#CA8A04)"></div></div></div>
+            </div>
+          </div>
+          <!-- SUBSCRIPTIONS SUMMARY -->
+          <div class="card chart-side" style="cursor:pointer" onclick="showPage('subscriptions')">
+            <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:16px">
+              <h3 class="card-title" style="margin-bottom:0" data-ar="🔄 الاشتراكات" data-en="🔄 Subscriptions">🔄 الاشتراكات</h3>
+              <span class="link" style="font-size:13px" data-ar="عرض الكل ←" data-en="View all →">عرض الكل ←</span>
+            </div>
+            <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:14px;padding-bottom:14px;border-bottom:1px solid rgba(99,102,241,0.06)">
+              <span style="font-size:13px;color:var(--text-muted)" data-ar="إجمالي شهري" data-en="Monthly total">إجمالي شهري</span>
+              <span style="font-size:18px;font-weight:700;color:var(--text-primary);direction:ltr">249 <span style="font-size:12px;color:var(--text-dim)" data-ar="ر.س" data-en="SAR">ر.س</span></span>
+            </div>
+            <div style="display:flex;align-items:center;gap:10px;margin-bottom:10px"><span style="font-size:16px">🎵</span><span style="flex:1;font-size:13px;color:var(--text-secondary)">Spotify</span><span class="sub-badge soon" data-ar="خلال يومين" data-en="in 2 days">خلال يومين</span></div>
+            <div style="display:flex;align-items:center;gap:10px;margin-bottom:10px"><span style="font-size:16px">☁️</span><span style="flex:1;font-size:13px;color:var(--text-secondary)">iCloud+</span><span class="sub-badge soon" data-ar="خلال 5 أيام" data-en="in 5 days">خلال 5 أيام</span></div>
+            <div style="display:flex;align-items:center;gap:10px;margin-bottom:10px"><span style="font-size:16px">🏋️</span><span style="flex:1;font-size:13px;color:var(--text-secondary)" data-ar="نادي رياضي" data-en="Gym">نادي رياضي</span><span class="sub-badge active" data-ar="تم التجديد" data-en="Renewed">تم التجديد</span></div>
+            <div style="display:flex;align-items:center;gap:10px"><span style="font-size:16px">📺</span><span style="flex:1;font-size:13px;color:var(--text-secondary)">Netflix</span><span class="sub-badge active" data-ar="20 أبريل" data-en="Apr 20">20 أبريل</span></div>
+          </div>
+        </div>
+
+        <!-- Charts row -->
+        <div class="charts-row" style="margin-top:20px">
           <div class="card chart-main">
-            <h3 class="card-title" data-ar="المصاريف الأسبوعية" data-en="Weekly Expenses">المصاريف الأسبوعية</h3>
+            <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:16px">
+              <h3 class="card-title" style="margin-bottom:0" data-ar="المصاريف الأسبوعية" data-en="Weekly Expenses">المصاريف الأسبوعية</h3>
+              <span class="link" style="font-size:13px;cursor:pointer" onclick="event.stopPropagation();showPage('reports')" data-ar="تقارير مفصّلة ←" data-en="Full reports →">تقارير مفصّلة ←</span>
+            </div>
             <div class="bar-chart">
               <div class="bar-col"><span class="bar-value">200</span><div class="bar" style="height:62px"></div><span class="bar-label" data-ar="سبت" data-en="Sat">سبت</span></div>
               <div class="bar-col"><span class="bar-value">150</span><div class="bar" style="height:47px"></div><span class="bar-label" data-ar="أحد" data-en="Sun">أحد</span></div>
@@ -182,10 +271,11 @@
               <div class="bar-col"><span class="bar-value">100</span><div class="bar" style="height:31px"></div><span class="bar-label" data-ar="جمعة" data-en="Fri">جمعة</span></div>
             </div>
           </div>
-
-          <!-- Category breakdown -->
-          <div class="card chart-side">
-            <h3 class="card-title" data-ar="حسب التصنيف" data-en="By Category">حسب التصنيف</h3>
+          <div class="card chart-side" style="cursor:pointer" onclick="showPage('categories')">
+            <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:16px">
+              <h3 class="card-title" style="margin-bottom:0" data-ar="حسب التصنيف" data-en="By Category">حسب التصنيف</h3>
+              <span class="link" style="font-size:13px" data-ar="كل التصنيفات ←" data-en="All categories →">كل التصنيفات ←</span>
+            </div>
             <div class="cat-row"><span class="cat-icon">🍽️</span><div class="cat-info"><div class="cat-header"><span class="cat-name" data-ar="طعام" data-en="Food">طعام</span><span class="cat-amount">150 <span data-ar="ر.س" data-en="SAR">ر.س</span></span></div><div class="progress-bg"><div class="progress-fill" style="width:11.6%;background:#e8634a"></div></div></div></div>
             <div class="cat-row"><span class="cat-icon">🚗</span><div class="cat-info"><div class="cat-header"><span class="cat-name" data-ar="مواصلات" data-en="Transport">مواصلات</span><span class="cat-amount">45 <span data-ar="ر.س" data-en="SAR">ر.س</span></span></div><div class="progress-bg"><div class="progress-fill" style="width:3.5%;background:#4a90d9"></div></div></div></div>
             <div class="cat-row"><span class="cat-icon">🛍️</span><div class="cat-info"><div class="cat-header"><span class="cat-name" data-ar="تسوق" data-en="Shopping">تسوق</span><span class="cat-amount">320 <span data-ar="ر.س" data-en="SAR">ر.س</span></span></div><div class="progress-bg"><div class="progress-fill" style="width:24.7%;background:#d94a8c"></div></div></div></div>
@@ -194,14 +284,125 @@
           </div>
         </div>
 
+        <!-- QUICK INSIGHTS -->
+        <div class="card" style="margin-top:20px;cursor:pointer" onclick="showPage('reports')">
+          <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:16px">
+            <h3 class="card-title" style="margin-bottom:0" data-ar="📊 تحليلات سريعة" data-en="📊 Quick Insights">📊 تحليلات سريعة</h3>
+            <span class="link" style="font-size:13px" data-ar="تقارير مفصّلة ←" data-en="Full reports →">تقارير مفصّلة ←</span>
+          </div>
+          <div style="display:flex;gap:16px;flex-wrap:wrap">
+            <div style="flex:1;min-width:140px;text-align:center;padding:12px;border-radius:12px;background:rgba(99,102,241,0.04)"><div style="font-size:11px;color:var(--text-dim);margin-bottom:4px" data-ar="أعلى تصنيف" data-en="Top Category">أعلى تصنيف</div><div style="font-size:16px;font-weight:700;color:var(--text-primary)" data-ar="📄 فواتير" data-en="📄 Bills">📄 فواتير</div><div style="font-size:11px;color:var(--red);margin-top:2px">38.6%</div></div>
+            <div style="flex:1;min-width:140px;text-align:center;padding:12px;border-radius:12px;background:rgba(16,185,129,0.04)"><div style="font-size:11px;color:var(--text-dim);margin-bottom:4px" data-ar="مقارنة بالشهر السابق" data-en="vs Last Month">مقارنة بالشهر السابق</div><div style="font-size:16px;font-weight:700;color:var(--green)">-59.5%</div><div style="font-size:11px;color:var(--green);margin-top:2px" data-ar="وفّرت 1,905 ر.س" data-en="Saved 1,905 SAR">وفّرت 1,905 ر.س</div></div>
+            <div style="flex:1;min-width:140px;text-align:center;padding:12px;border-radius:12px;background:rgba(99,102,241,0.04)"><div style="font-size:11px;color:var(--text-dim);margin-bottom:4px" data-ar="متوسط يومي" data-en="Daily Average">متوسط يومي</div><div style="font-size:16px;font-weight:700;color:var(--text-primary);direction:ltr">185 <span style="font-size:11px;color:var(--text-dim)" data-ar="ر.س" data-en="SAR">ر.س</span></div><div style="font-size:11px;color:var(--green);margin-top:2px" data-ar="↓ 12% أقل" data-en="↓ 12% less">↓ 12% أقل</div></div>
+            <div style="flex:1;min-width:140px;text-align:center;padding:12px;border-radius:12px;background:rgba(234,179,8,0.04)"><div style="font-size:11px;color:var(--text-dim);margin-bottom:4px" data-ar="أعلى يوم" data-en="Top Day">أعلى يوم</div><div style="font-size:16px;font-weight:700;color:var(--text-primary)" data-ar="الاثنين" data-en="Monday">الاثنين</div><div style="font-size:11px;color:var(--red);margin-top:2px" data-ar="320 ر.س" data-en="320 SAR">320 ر.س</div></div>
+          </div>
+        </div>
+
         <!-- Recent transactions -->
-        <div class="card tx-list">
+        <div class="card tx-list" style="margin-top:20px">
           <h3 class="card-title" data-ar="آخر العمليات" data-en="Recent Transactions">آخر العمليات</h3>
           <div class="tx-item"><div class="tx-icon-wrap" style="background:rgba(232,99,74,0.1)">🍽️</div><div class="tx-info"><div class="tx-cat" data-ar="طعام" data-en="Food">طعام</div><div class="tx-detail" data-ar="غداء مطعم • 2026-03-09 12:30" data-en="Restaurant lunch • 2026-03-09 12:30">غداء مطعم • 2026-03-09 12:30</div></div><div class="tx-amount">-150 <span data-ar="ر.س" data-en="SAR">ر.س</span></div></div>
           <div class="tx-item"><div class="tx-icon-wrap" style="background:rgba(74,144,217,0.1)">🚗</div><div class="tx-info"><div class="tx-cat" data-ar="مواصلات" data-en="Transport">مواصلات</div><div class="tx-detail" data-ar="أوبر للدوام • 2026-03-09 08:15" data-en="Uber to work • 2026-03-09 08:15">أوبر للدوام • 2026-03-09 08:15</div></div><div class="tx-amount">-45 <span data-ar="ر.س" data-en="SAR">ر.س</span></div></div>
           <div class="tx-item"><div class="tx-icon-wrap" style="background:rgba(217,74,140,0.1)">🛍️</div><div class="tx-info"><div class="tx-cat" data-ar="تسوق" data-en="Shopping">تسوق</div><div class="tx-detail" data-ar="ملابس • 2026-03-08 16:00" data-en="Clothes • 2026-03-08 16:00">ملابس • 2026-03-08 16:00</div></div><div class="tx-amount">-320 <span data-ar="ر.س" data-en="SAR">ر.س</span></div></div>
           <div class="tx-item"><div class="tx-icon-wrap" style="background:rgba(232,169,74,0.1)">📄</div><div class="tx-info"><div class="tx-cat" data-ar="فواتير" data-en="Bills">فواتير</div><div class="tx-detail" data-ar="كهرباء • 2026-03-07 10:00" data-en="Electricity • 2026-03-07 10:00">كهرباء • 2026-03-07 10:00</div></div><div class="tx-amount">-500 <span data-ar="ر.س" data-en="SAR">ر.س</span></div></div>
           <div class="tx-item"><div class="tx-icon-wrap" style="background:rgba(155,89,182,0.1)">🎬</div><div class="tx-info"><div class="tx-cat" data-ar="ترفيه" data-en="Entertainment">ترفيه</div><div class="tx-detail" data-ar="سينما • 2026-03-07 20:00" data-en="Cinema • 2026-03-07 20:00">سينما • 2026-03-07 20:00</div></div><div class="tx-amount">-80 <span data-ar="ر.س" data-en="SAR">ر.س</span></div></div>
+        </div>
+      </div>
+
+
+      <!-- GOALS PAGE -->
+      <div id="sec-goals" class="hidden">
+        <div class="categories-header">
+          <h2 class="page-title" data-ar="الأهداف المالية" data-en="Financial Goals">الأهداف المالية</h2>
+          <button class="btn-outline" onclick="openModal('goal-modal')" data-ar="+ هدف جديد" data-en="+ New Goal">+ هدف جديد</button>
+        </div>
+
+        <!-- Goals Summary Stats -->
+        <div class="stats-row" style="margin-bottom:20px">
+          <div class="stat-card">
+            <div class="stat-header">
+              <span class="stat-label" data-ar="إجمالي الأهداف" data-en="Total Goals">إجمالي الأهداف</span>
+              <div class="stat-icon" style="background:linear-gradient(135deg,var(--accent),var(--accent-dark))">🎯</div>
+            </div>
+            <div class="stat-value">3</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-header">
+              <span class="stat-label" data-ar="إجمالي مُدّخر" data-en="Total Saved">إجمالي مُدّخر</span>
+              <div class="stat-icon" style="background:linear-gradient(135deg,var(--green),var(--green-dark))">💎</div>
+            </div>
+            <div class="stat-value">15,800 <span class="stat-currency" data-ar="ر.س" data-en="SAR">ر.س</span></div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-header">
+              <span class="stat-label" data-ar="إجمالي مستهدف" data-en="Total Target">إجمالي مستهدف</span>
+              <div class="stat-icon" style="background:linear-gradient(135deg,var(--yellow),#CA8A04)">🏆</div>
+            </div>
+            <div class="stat-value">33,000 <span class="stat-currency" data-ar="ر.س" data-en="SAR">ر.س</span></div>
+            <div class="stat-sub" data-ar="47.9% مكتمل" data-en="47.9% complete">47.9% مكتمل</div>
+          </div>
+        </div>
+
+        <!-- Goals List -->
+        <div class="goals-section" id="goals-list-container">
+          <div class="goal-card">
+            <div class="goal-header">
+              <div class="goal-info">
+                <div class="goal-icon-wrap" style="background:rgba(16,185,129,0.1)">🏠</div>
+                <div>
+                  <div class="goal-name" data-ar="صندوق الطوارئ" data-en="Emergency Fund">صندوق الطوارئ</div>
+                  <div class="goal-dates" data-ar="الهدف: يونيو 2026" data-en="Goal: June 2026">الهدف: يونيو 2026</div>
+                </div>
+              </div>
+              <div class="goal-amount">
+                <div class="goal-current" style="color:var(--green)">12,000</div>
+                <div class="goal-target" data-ar="من 20,000 ر.س" data-en="of 20,000 SAR">من 20,000 ر.س</div>
+              </div>
+            </div>
+            <div class="goal-progress-bar"><div class="goal-progress-fill" style="width:60%;background:linear-gradient(90deg,var(--green),var(--green-dark))"></div></div>
+            <div class="goal-footer"><span class="goal-pct" style="color:var(--green)">60%</span><span class="goal-remain" data-ar="متبقي 8,000 ر.س" data-en="8,000 SAR remaining">متبقي 8,000 ر.س</span></div>
+          </div>
+
+          <div class="goal-card">
+            <div class="goal-header">
+              <div class="goal-info">
+                <div class="goal-icon-wrap" style="background:rgba(99,102,241,0.1)">💻</div>
+                <div>
+                  <div class="goal-name" data-ar="لابتوب جديد" data-en="New Laptop">لابتوب جديد</div>
+                  <div class="goal-dates" data-ar="الهدف: أغسطس 2026" data-en="Goal: August 2026">الهدف: أغسطس 2026</div>
+                </div>
+              </div>
+              <div class="goal-amount">
+                <div class="goal-current" style="color:var(--accent)">2,800</div>
+                <div class="goal-target" data-ar="من 5,000 ر.س" data-en="of 5,000 SAR">من 5,000 ر.س</div>
+              </div>
+            </div>
+            <div class="goal-progress-bar"><div class="goal-progress-fill" style="width:56%;background:linear-gradient(90deg,var(--accent),var(--accent-dark))"></div></div>
+            <div class="goal-footer"><span class="goal-pct" style="color:var(--accent)">56%</span><span class="goal-remain" data-ar="متبقي 2,200 ر.س" data-en="2,200 SAR remaining">متبقي 2,200 ر.س</span></div>
+          </div>
+
+          <div class="goal-card">
+            <div class="goal-header">
+              <div class="goal-info">
+                <div class="goal-icon-wrap" style="background:rgba(234,179,8,0.1)">✈️</div>
+                <div>
+                  <div class="goal-name" data-ar="رحلة سياحية" data-en="Travel Trip">رحلة سياحية</div>
+                  <div class="goal-dates" data-ar="الهدف: ديسمبر 2026" data-en="Goal: December 2026">الهدف: ديسمبر 2026</div>
+                </div>
+              </div>
+              <div class="goal-amount">
+                <div class="goal-current" style="color:#EAB308">1,000</div>
+                <div class="goal-target" data-ar="من 8,000 ر.س" data-en="of 8,000 SAR">من 8,000 ر.س</div>
+              </div>
+            </div>
+            <div class="goal-progress-bar"><div class="goal-progress-fill" style="width:12.5%;background:linear-gradient(90deg,#EAB308,#CA8A04)"></div></div>
+            <div class="goal-footer"><span class="goal-pct" style="color:#EAB308">12.5%</span><span class="goal-remain" data-ar="متبقي 7,000 ر.س" data-en="7,000 SAR remaining">متبقي 7,000 ر.س</span></div>
+          </div>
+
+          <button class="btn-add-goal" onclick="openModal('goal-modal')">
+            <span>➕</span>
+            <span data-ar="إضافة هدف جديد" data-en="Add New Goal">إضافة هدف جديد</span>
+          </button>
         </div>
       </div>
 
@@ -311,6 +512,96 @@
         </div>
       </div>
 
+      <!-- SUBSCRIPTIONS SECTION -->
+      <div id="sec-subscriptions" class="hidden">
+        <div class="categories-header">
+          <h2 class="page-title" data-ar="الاشتراكات" data-en="Subscriptions">الاشتراكات</h2>
+          <button class="btn-outline" onclick="openModal('sub-modal')" data-ar="+ اشتراك جديد" data-en="+ New Subscription">+ اشتراك جديد</button>
+        </div>
+
+        <!-- Subscriptions Summary -->
+        <div class="stats-row" style="margin-bottom:20px">
+          <div class="stat-card">
+            <div class="stat-header">
+              <span class="stat-label" data-ar="إجمالي شهري" data-en="Monthly Total">إجمالي شهري</span>
+              <div class="stat-icon" style="background:linear-gradient(135deg,var(--accent),var(--accent-dark))">🔄</div>
+            </div>
+            <div class="stat-value">249 <span class="stat-currency" data-ar="ر.س" data-en="SAR">ر.س</span></div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-header">
+              <span class="stat-label" data-ar="إجمالي سنوي" data-en="Yearly Total">إجمالي سنوي</span>
+              <div class="stat-icon" style="background:linear-gradient(135deg,var(--yellow),#CA8A04)">📅</div>
+            </div>
+            <div class="stat-value">2,988 <span class="stat-currency" data-ar="ر.س" data-en="SAR">ر.س</span></div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-header">
+              <span class="stat-label" data-ar="تجديد قريب" data-en="Due Soon">تجديد قريب</span>
+              <div class="stat-icon" style="background:linear-gradient(135deg,var(--red),var(--red-dark))">🔔</div>
+            </div>
+            <div class="stat-value">2</div>
+            <div class="stat-sub" data-ar="خلال 7 أيام" data-en="within 7 days">خلال 7 أيام</div>
+          </div>
+        </div>
+
+        <!-- Subscriptions List -->
+        <div class="subscriptions-section">
+          <div class="sub-item">
+            <div class="sub-icon-wrap" style="background:rgba(239,68,68,0.1)">🎵</div>
+            <div class="sub-info">
+              <div class="sub-name">Spotify Premium</div>
+              <div class="sub-cycle" data-ar="شهري • بدأ 15 يناير 2026" data-en="Monthly • Started Jan 15, 2026">شهري • بدأ 15 يناير 2026</div>
+            </div>
+            <div class="sub-right">
+              <div class="sub-price">-27 <span data-ar="ر.س" data-en="SAR">ر.س</span></div>
+              <div class="sub-renewal"><span class="sub-badge soon" data-ar="خلال يومين" data-en="in 2 days">خلال يومين</span></div>
+            </div>
+          </div>
+
+          <div class="sub-item">
+            <div class="sub-icon-wrap" style="background:rgba(99,102,241,0.1)">☁️</div>
+            <div class="sub-info">
+              <div class="sub-name">iCloud+</div>
+              <div class="sub-cycle" data-ar="شهري • بدأ 3 فبراير 2026" data-en="Monthly • Started Feb 3, 2026">شهري • بدأ 3 فبراير 2026</div>
+            </div>
+            <div class="sub-right">
+              <div class="sub-price">-12 <span data-ar="ر.س" data-en="SAR">ر.س</span></div>
+              <div class="sub-renewal"><span class="sub-badge soon" data-ar="خلال 5 أيام" data-en="in 5 days">خلال 5 أيام</span></div>
+            </div>
+          </div>
+
+          <div class="sub-item">
+            <div class="sub-icon-wrap" style="background:rgba(16,185,129,0.1)">🏋️</div>
+            <div class="sub-info">
+              <div class="sub-name" data-ar="نادي رياضي" data-en="Gym Membership">نادي رياضي</div>
+              <div class="sub-cycle" data-ar="شهري • بدأ 1 يناير 2026" data-en="Monthly • Started Jan 1, 2026">شهري • بدأ 1 يناير 2026</div>
+            </div>
+            <div class="sub-right">
+              <div class="sub-price">-150 <span data-ar="ر.س" data-en="SAR">ر.س</span></div>
+              <div class="sub-renewal"><span class="sub-badge active" data-ar="تم التجديد" data-en="Renewed">تم التجديد</span></div>
+            </div>
+          </div>
+
+          <div class="sub-item">
+            <div class="sub-icon-wrap" style="background:rgba(232,169,74,0.1)">📺</div>
+            <div class="sub-info">
+              <div class="sub-name">Netflix</div>
+              <div class="sub-cycle" data-ar="شهري • بدأ 20 ديسمبر 2025" data-en="Monthly • Started Dec 20, 2025">شهري • بدأ 20 ديسمبر 2025</div>
+            </div>
+            <div class="sub-right">
+              <div class="sub-price">-60 <span data-ar="ر.س" data-en="SAR">ر.س</span></div>
+              <div class="sub-renewal"><span class="sub-badge active" data-ar="20 أبريل" data-en="Apr 20">20 أبريل</span></div>
+            </div>
+          </div>
+
+          <button class="btn-add-sub" onclick="openModal('sub-modal')">
+            <span>➕</span>
+            <span data-ar="إضافة اشتراك" data-en="Add Subscription">إضافة اشتراك</span>
+          </button>
+        </div>
+      </div>
+
       <!-- REPORTS SECTION -->
       <div id="sec-reports" class="hidden">
         <h2 class="page-title" style="margin-bottom:28px" data-ar="التقارير والإحصائيات" data-en="Reports & Statistics">التقارير والإحصائيات</h2>
@@ -333,23 +624,230 @@
             <div class="summary-item"><div><div class="summary-label" data-ar="عدد العمليات" data-en="Transactions">عدد العمليات</div><div class="summary-sub" data-ar="هذا الشهر" data-en="This month">هذا الشهر</div></div><div class="summary-value" style="color:var(--yellow)">6</div></div>
           </div>
         </div>
+
+        <!-- EXPENSE INSIGHTS -->
+        <div style="margin-top:28px">
+          <h3 class="card-title" data-ar="📊 تحليلات ذكية" data-en="📊 Smart Insights">📊 تحليلات ذكية</h3>
+          <div class="insights-grid">
+            <div class="insight-card">
+              <div class="insight-icon">📅</div>
+              <div class="insight-label" data-ar="أعلى يوم إنفاق" data-en="Highest Spending Day">أعلى يوم إنفاق</div>
+              <div class="insight-value" data-ar="الاثنين" data-en="Monday">الاثنين</div>
+              <div class="insight-sub negative" data-ar="320 ر.س في المتوسط" data-en="320 SAR on average">320 ر.س في المتوسط</div>
+            </div>
+            <div class="insight-card">
+              <div class="insight-icon">🏆</div>
+              <div class="insight-label" data-ar="أعلى تصنيف" data-en="Top Category">أعلى تصنيف</div>
+              <div class="insight-value" data-ar="📄 فواتير" data-en="📄 Bills">📄 فواتير</div>
+              <div class="insight-sub negative" data-ar="38.6% من المصاريف" data-en="38.6% of expenses">38.6% من المصاريف</div>
+            </div>
+            <div class="insight-card">
+              <div class="insight-icon">📈</div>
+              <div class="insight-label" data-ar="متوسط يومي" data-en="Daily Average">متوسط يومي</div>
+              <div class="insight-value">185 <span style="font-size:12px;color:var(--text-dim)" data-ar="ر.س" data-en="SAR">ر.س</span></div>
+              <div class="insight-sub positive" data-ar="↓ أقل من الشهر الماضي بـ 12%" data-en="↓ 12% less than last month">↓ أقل من الشهر الماضي بـ 12%</div>
+            </div>
+            <div class="insight-card">
+              <div class="insight-icon">📉</div>
+              <div class="insight-label" data-ar="مقارنة بالشهر السابق" data-en="vs Last Month">مقارنة بالشهر السابق</div>
+              <div class="insight-value" style="color:var(--green)">-59.5%</div>
+              <div class="insight-sub positive" data-ar="وفّرت 1,905 ر.س هذا الشهر" data-en="Saved 1,905 SAR this month">وفّرت 1,905 ر.س هذا الشهر</div>
+            </div>
+            <div class="insight-card">
+              <div class="insight-icon">🔥</div>
+              <div class="insight-label" data-ar="أكبر مصروف واحد" data-en="Largest Single Expense">أكبر مصروف واحد</div>
+              <div class="insight-value">500 <span style="font-size:12px;color:var(--text-dim)" data-ar="ر.س" data-en="SAR">ر.س</span></div>
+              <div class="insight-sub neutral" data-ar="كهرباء - 7 مارس" data-en="Electricity - Mar 7">كهرباء - 7 مارس</div>
+            </div>
+            <div class="insight-card">
+              <div class="insight-icon">💡</div>
+              <div class="insight-label" data-ar="نصيحة" data-en="Tip">نصيحة</div>
+              <div class="insight-value" style="font-size:14px;line-height:1.5" data-ar="لو قللت الطعام الخارجي 20% توفر ~30 ر.س شهرياً" data-en="Reducing dining out by 20% saves ~30 SAR/month">لو قللت الطعام الخارجي 20% توفر ~30 ر.س شهرياً</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- MONTHLY COMPARISON -->
+        <div class="comparison-section">
+          <div class="card" style="margin-top:20px">
+            <h3 class="card-title" data-ar="مقارنة شهرية مفصّلة" data-en="Detailed Monthly Comparison">مقارنة شهرية مفصّلة</h3>
+            <p style="font-size:12px;color:var(--text-dim);margin:-14px 0 18px" data-ar="مارس 2026 مقابل فبراير 2026" data-en="March 2026 vs February 2026">مارس 2026 مقابل فبراير 2026</p>
+
+            <div class="comparison-row">
+              <span class="comparison-label">🍽️ <span data-ar="طعام" data-en="Food">طعام</span></span>
+              <div class="comparison-bars">
+                <div class="comparison-bar-row">
+                  <span class="comparison-bar-label" data-ar="مارس" data-en="Mar">مارس</span>
+                  <div class="comparison-bar-track"><div class="comparison-bar-fill current" style="width:30%"></div></div>
+                  <span class="comparison-bar-val">150</span>
+                </div>
+                <div class="comparison-bar-row">
+                  <span class="comparison-bar-label" data-ar="فبراير" data-en="Feb">فبراير</span>
+                  <div class="comparison-bar-track"><div class="comparison-bar-fill previous" style="width:50%"></div></div>
+                  <span class="comparison-bar-val">480</span>
+                </div>
+              </div>
+            </div>
+
+            <div class="comparison-row">
+              <span class="comparison-label">🚗 <span data-ar="مواصلات" data-en="Transport">مواصلات</span></span>
+              <div class="comparison-bars">
+                <div class="comparison-bar-row">
+                  <span class="comparison-bar-label" data-ar="مارس" data-en="Mar">مارس</span>
+                  <div class="comparison-bar-track"><div class="comparison-bar-fill current" style="width:15%"></div></div>
+                  <span class="comparison-bar-val">45</span>
+                </div>
+                <div class="comparison-bar-row">
+                  <span class="comparison-bar-label" data-ar="فبراير" data-en="Feb">فبراير</span>
+                  <div class="comparison-bar-track"><div class="comparison-bar-fill previous" style="width:40%"></div></div>
+                  <span class="comparison-bar-val">380</span>
+                </div>
+              </div>
+            </div>
+
+            <div class="comparison-row">
+              <span class="comparison-label">🛍️ <span data-ar="تسوق" data-en="Shopping">تسوق</span></span>
+              <div class="comparison-bars">
+                <div class="comparison-bar-row">
+                  <span class="comparison-bar-label" data-ar="مارس" data-en="Mar">مارس</span>
+                  <div class="comparison-bar-track"><div class="comparison-bar-fill current" style="width:42%"></div></div>
+                  <span class="comparison-bar-val">320</span>
+                </div>
+                <div class="comparison-bar-row">
+                  <span class="comparison-bar-label" data-ar="فبراير" data-en="Feb">فبراير</span>
+                  <div class="comparison-bar-track"><div class="comparison-bar-fill previous" style="width:85%"></div></div>
+                  <span class="comparison-bar-val">850</span>
+                </div>
+              </div>
+            </div>
+
+            <div class="comparison-row" style="border-bottom:none">
+              <span class="comparison-label">📄 <span data-ar="فواتير" data-en="Bills">فواتير</span></span>
+              <div class="comparison-bars">
+                <div class="comparison-bar-row">
+                  <span class="comparison-bar-label" data-ar="مارس" data-en="Mar">مارس</span>
+                  <div class="comparison-bar-track"><div class="comparison-bar-fill current" style="width:55%"></div></div>
+                  <span class="comparison-bar-val">500</span>
+                </div>
+                <div class="comparison-bar-row">
+                  <span class="comparison-bar-label" data-ar="فبراير" data-en="Feb">فبراير</span>
+                  <div class="comparison-bar-track"><div class="comparison-bar-fill previous" style="width:65%"></div></div>
+                  <span class="comparison-bar-val">620</span>
+                </div>
+              </div>
+            </div>
+
+            <div class="comparison-summary">
+              <div class="comp-summary-item">
+                <div class="comp-summary-label" data-ar="مارس" data-en="March">مارس</div>
+                <div class="comp-summary-value" style="color:var(--accent)">1,295</div>
+              </div>
+              <div class="comp-summary-item">
+                <div class="comp-summary-label" data-ar="فبراير" data-en="February">فبراير</div>
+                <div class="comp-summary-value" style="color:var(--text-muted)">3,200</div>
+              </div>
+              <div class="comp-summary-item">
+                <div class="comp-summary-label" data-ar="الفرق" data-en="Difference">الفرق</div>
+                <div class="comp-summary-value" style="color:var(--green)">-1,905</div>
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
 
       <!-- SETTINGS SECTION -->
       <div id="sec-settings" class="form-page hidden">
         <h2 class="page-title" style="margin-bottom:28px" data-ar="الإعدادات" data-en="Settings">الإعدادات</h2>
         <div class="setting-row"><span class="setting-label" data-ar="الاسم" data-en="Name">الاسم</span><span class="setting-value" data-ar="محمد أحمد" data-en="Mohammed Ahmed">محمد أحمد</span></div>
-        <div class="setting-row"><span class="setting-label" data-ar="البريد الإلكتروني" data-en="Email">البريد الإلكتروني</span><span class="setting-value">mohammed@example.com</span></div>
+        <div class="setting-row"><span class="setting-label" data-ar="البريد الإلكتروني" data-en="Email">البريد الإلكتروني</span><span class="setting-value"><a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="492426212824242c2d092c31282439252c672a2624">[email&#160;protected]</a></span></div>
         <div class="setting-row"><span class="setting-label" data-ar="العملة" data-en="Currency">العملة</span><span class="setting-value" data-ar="ريال سعودي (ر.س)" data-en="Saudi Riyal (SAR)">ريال سعودي (ر.س)</span></div>
         <div class="setting-row"><span class="setting-label" data-ar="اللغة" data-en="Language">اللغة</span><button class="btn-lang" onclick="toggleLang()" data-ar="English" data-en="عربي">English</button></div>
+
+        <!-- Spending Limit Setting -->
+        <div class="setting-row">
+          <span class="setting-label" data-ar="حد الإنفاق الشهري" data-en="Monthly Spending Limit">حد الإنفاق الشهري</span>
+          <span class="setting-value">1,500 <span data-ar="ر.س" data-en="SAR">ر.س</span></span>
+        </div>
       </div>
 
     </main>
   </div>
 
-  <!-- ===== JAVASCRIPT ===== -->
+  <!-- ===== MODALS ===== -->
+
+  <!-- Add Goal Modal -->
+  <div id="goal-modal" class="modal-overlay" onclick="if(event.target===this)closeModal('goal-modal')">
+    <div class="modal-card">
+      <h3 class="modal-title" data-ar="إضافة هدف مالي" data-en="Add Financial Goal">إضافة هدف مالي</h3>
+      <div style="display:flex;flex-direction:column;gap:14px">
+        <div>
+          <label class="form-label" data-ar="اسم الهدف" data-en="Goal Name">اسم الهدف</label>
+          <input type="text" class="form-input" id="goal-name-input" data-ph-ar="مثال: سيارة جديدة..." data-ph-en="e.g., New car..." placeholder="مثال: سيارة جديدة...">
+        </div>
+        <div>
+          <label class="form-label" data-ar="المبلغ المستهدف" data-en="Target Amount">المبلغ المستهدف</label>
+          <input type="number" class="form-input" id="goal-target-input" placeholder="0.00">
+        </div>
+        <div>
+          <label class="form-label" data-ar="المبلغ الحالي" data-en="Current Amount">المبلغ الحالي</label>
+          <input type="number" class="form-input" id="goal-current-input" placeholder="0.00">
+        </div>
+        <div>
+          <label class="form-label" data-ar="التاريخ المستهدف" data-en="Target Date">التاريخ المستهدف</label>
+          <input type="date" class="form-input" id="goal-date-input">
+        </div>
+        <button class="btn btn-accent" onclick="addGoal();closeModal('goal-modal')" data-ar="حفظ الهدف" data-en="Save Goal">حفظ الهدف</button>
+        <button class="btn" style="background:transparent;color:var(--text-muted);border:1px solid var(--border)" onclick="closeModal('goal-modal')" data-ar="إلغاء" data-en="Cancel">إلغاء</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Add Subscription Modal -->
+  <div id="sub-modal" class="modal-overlay" onclick="if(event.target===this)closeModal('sub-modal')">
+    <div class="modal-card">
+      <h3 class="modal-title" data-ar="إضافة اشتراك" data-en="Add Subscription">إضافة اشتراك</h3>
+      <div style="display:flex;flex-direction:column;gap:14px">
+        <div>
+          <label class="form-label" data-ar="اسم الاشتراك" data-en="Subscription Name">اسم الاشتراك</label>
+          <input type="text" class="form-input" id="sub-name-input" data-ph-ar="مثال: Netflix..." data-ph-en="e.g., Netflix..." placeholder="مثال: Netflix...">
+        </div>
+        <div>
+          <label class="form-label" data-ar="المبلغ" data-en="Amount">المبلغ</label>
+          <input type="number" class="form-input" id="sub-amount-input" placeholder="0.00">
+        </div>
+        <div>
+          <label class="form-label" data-ar="دورة الدفع" data-en="Billing Cycle">دورة الدفع</label>
+          <select class="form-input" id="sub-cycle-input" style="cursor:pointer">
+            <option value="monthly" data-ar="شهري" data-en="Monthly">شهري</option>
+            <option value="yearly" data-ar="سنوي" data-en="Yearly">سنوي</option>
+            <option value="weekly" data-ar="أسبوعي" data-en="Weekly">أسبوعي</option>
+          </select>
+        </div>
+        <div>
+          <label class="form-label" data-ar="تاريخ التجديد القادم" data-en="Next Renewal Date">تاريخ التجديد القادم</label>
+          <input type="date" class="form-input" id="sub-date-input">
+        </div>
+        <button class="btn btn-accent" onclick="addSubscription();closeModal('sub-modal')" data-ar="حفظ الاشتراك" data-en="Save Subscription">حفظ الاشتراك</button>
+        <button class="btn" style="background:transparent;color:var(--text-muted);border:1px solid var(--border)" onclick="closeModal('sub-modal')" data-ar="إلغاء" data-en="Cancel">إلغاء</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Edit Spending Limit Modal -->
+  <div id="limit-modal" class="modal-overlay" onclick="if(event.target===this)closeModal('limit-modal')">
+    <div class="modal-card">
+      <h3 class="modal-title" data-ar="تعديل حد الإنفاق" data-en="Edit Spending Limit">تعديل حد الإنفاق</h3>
+      <div style="display:flex;flex-direction:column;gap:14px">
+        <div>
+          <label class="form-label" data-ar="حد الإنفاق الشهري (ر.س)" data-en="Monthly Spending Limit (SAR)">حد الإنفاق الشهري (ر.س)</label>
+          <input type="number" class="form-input" id="limit-amount-input" value="1500" placeholder="1500">
+        </div>
+        <button class="btn btn-accent" onclick="updateLimit();closeModal('limit-modal')" data-ar="حفظ" data-en="Save">حفظ</button>
+        <button class="btn" style="background:transparent;color:var(--text-muted);border:1px solid var(--border)" onclick="closeModal('limit-modal')" data-ar="إلغاء" data-en="Cancel">إلغاء</button>
+      </div>
+    </div>
+  </div>
+
   <script src="script.js"></script>
-
-
 </body>
 </html>
