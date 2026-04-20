@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1.0">
+  <title>المصاريف | مفكرة المصاريف</title>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Kufi+Arabic:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="assets/styles.css">
+</head>
+<body>
+  <div class="noise-overlay"></div>
+  <div class="glow-orb-1"></div>
+  <div class="glow-orb-2"></div>
+
+  <div class="app-layout">
+    <aside class="sidebar" id="sidebar"></aside>
+    <main class="main-content">
+
+      <div class="page-header">
+        <div><h1 class="page-title plain">➖ إضافة مصروف</h1><p class="page-sub">سجّل مصروفك مع التفاصيل</p></div>
+        <button class="btn-export" onclick="doExport()">📥 تصدير CSV</button>
+      </div>
+
+      <div id="success-msg" class="success-msg"></div>
+      <div id="error-msg" class="error-msg"></div>
+
+      <div style="max-width:720px;margin:0 auto">
+        <div class="form-group">
+          <label class="form-label">التصنيف</label>
+          <div class="category-grid" id="cat-grid"><p style="color:var(--text-3)">جاري التحميل...</p></div>
+        </div>
+        <div class="form-group">
+          <label class="form-label">المبلغ (ر.س)</label>
+          <input type="number" class="form-input" id="amount" placeholder="0.00" step="0.01" min="0">
+        </div>
+        <div class="form-group">
+          <label class="form-label">الوصف</label>
+          <input type="text" class="form-input" id="description" placeholder="مثال: غداء مع الأصدقاء">
+        </div>
+        <div class="form-row">
+          <div class="form-group"><label class="form-label">التاريخ</label><input type="date" class="form-input" id="date"></div>
+          <div class="form-group"><label class="form-label">ملاحظات</label><input type="text" class="form-input" id="notes" placeholder="اختياري"></div>
+        </div>
+        <button class="btn btn-red btn-full" onclick="saveExpense()">➖ حفظ المصروف</button>
+
+        <div style="margin-top:36px">
+          <h3 style="font-size:16px;margin-bottom:14px;color:var(--text-2)">📋 المصروفات المسجلة</h3>
+          <div class="filter-bar">
+            <div class="search-wrap">
+              <span class="search-icon">🔍</span>
+              <input type="text" class="search-input" id="search" placeholder="بحث..." oninput="renderList()">
+            </div>
+            <select class="form-select" id="filter-cat" onchange="renderList()" style="flex:1;min-width:120px;padding:9px 13px;border-radius:40px">
+              <option value="">كل التصنيفات</option>
+            </select>
+          </div>
+          <div id="total-bar" style="text-align:left;margin-bottom:12px;font-size:13px;color:var(--text-3)"></div>
+          <div id="exp-list"><p style="color:var(--text-3)">جاري التحميل...</p></div>
+        </div>
+      </div>
+
+    </main>
+  </div>
+
+  <div id="edit-modal" class="modal-overlay hidden">
+    <div class="modal-card">
+      <h3 class="modal-title">تعديل المصروف</h3>
+      <input type="hidden" id="edit-id">
+      <div class="form-group"><label class="form-label">التصنيف</label><select class="form-select" id="edit-cat"></select></div>
+      <div class="form-group"><label class="form-label">المبلغ (ر.س)</label><input type="number" class="form-input" id="edit-amount"></div>
+      <div class="form-group"><label class="form-label">الوصف</label><input type="text" class="form-input" id="edit-desc"></div>
+      <div class="form-group"><label class="form-label">التاريخ</label><input type="date" class="form-input" id="edit-date"></div>
+      <button class="btn btn-accent btn-full" onclick="saveEdit()">حفظ التعديل</button>
+      <button class="btn btn-outline btn-full" style="margin-top:8px" onclick="closeModal('edit-modal')">إلغاء</button>
+    </div>
+  </div>
+
+  <script src="js/storage.js"></script>
+  <script src="js/ui.js"></script>
+  <script src="js/pages/expenses.js"></script>
+</body>
+</html>

@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1.0">
+  <title>إضافة دخل | مفكرة المصاريف</title>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Kufi+Arabic:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="assets/styles.css">
+</head>
+<body>
+  <div class="noise-overlay"></div>
+  <div class="glow-orb-1"></div>
+  <div class="glow-orb-2"></div>
+
+  <div class="app-layout">
+    <aside class="sidebar" id="sidebar"></aside>
+    <main class="main-content">
+
+      <div class="page-header">
+        <div><h1 class="page-title green">➕ إضافة دخل</h1><p class="page-sub">سجّل مصدر دخلك</p></div>
+        <button class="btn-export" onclick="doExport()">📥 تصدير</button>
+      </div>
+
+      <div id="success-msg" class="success-msg"></div>
+      <div id="error-msg" class="error-msg"></div>
+
+      <div style="max-width:720px;margin:0 auto">
+        <div class="form-group">
+          <label class="form-label">مصدر الدخل</label>
+          <div class="source-grid">
+            <button class="source-btn selected" onclick="selSrc(this,'راتب','💼')"><span>💼</span><span>راتب</span></button>
+            <button class="source-btn" onclick="selSrc(this,'عمل حر','💻')"><span>💻</span><span>عمل حر</span></button>
+            <button class="source-btn" onclick="selSrc(this,'استثمار','📈')"><span>📈</span><span>استثمار</span></button>
+            <button class="source-btn" onclick="selSrc(this,'هدية','🎁')"><span>🎁</span><span>هدية</span></button>
+            <button class="source-btn" onclick="selSrc(this,'إيجار','🏠')"><span>🏠</span><span>إيجار</span></button>
+            <button class="source-btn" onclick="selSrc(this,'أخرى','💰')"><span>💰</span><span>أخرى</span></button>
+          </div>
+        </div>
+        <div class="form-group"><label class="form-label">المبلغ (ر.س)</label><input type="number" class="form-input" id="amount" placeholder="0.00" step="0.01" min="0"></div>
+        <div class="form-group"><label class="form-label">الوصف (اختياري)</label><input type="text" class="form-input" id="desc" placeholder="مثال: راتب شهر أبريل"></div>
+        <div class="form-row">
+          <div class="form-group"><label class="form-label">التاريخ</label><input type="date" class="form-input" id="date"></div>
+          <div class="form-group"><label class="form-label">الوقت</label><input type="time" class="form-input" id="time"></div>
+        </div>
+        <button class="btn btn-green btn-full" onclick="saveIncome()">➕ حفظ الدخل</button>
+
+        <div style="margin-top:34px">
+          <h3 style="font-size:16px;margin-bottom:14px;color:var(--text-2)">📋 الدخل المسجل</h3>
+          <div id="income-list"><p style="color:var(--text-3)">جاري التحميل...</p></div>
+        </div>
+      </div>
+
+    </main>
+  </div>
+
+  <div id="edit-modal" class="modal-overlay hidden">
+    <div class="modal-card">
+      <h3 class="modal-title">تعديل الدخل</h3>
+      <input type="hidden" id="edit-id">
+      <div class="form-group"><label class="form-label">المصدر</label><input type="text" class="form-input" id="edit-source"></div>
+      <div class="form-group"><label class="form-label">المبلغ</label><input type="number" class="form-input" id="edit-amount"></div>
+      <div class="form-group"><label class="form-label">التاريخ</label><input type="date" class="form-input" id="edit-date"></div>
+      <button class="btn btn-accent btn-full" onclick="saveEdit()">حفظ التعديل</button>
+      <button class="btn btn-outline btn-full" style="margin-top:8px" onclick="closeModal('edit-modal')">إلغاء</button>
+    </div>
+  </div>
+
+  <script src="js/storage.js"></script>
+  <script src="js/ui.js"></script>
+  <script src="js/pages/income.js"></script>
+</body>
+</html>

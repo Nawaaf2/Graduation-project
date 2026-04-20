@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1.0">
+  <title>مقارنة الأشهر | مفكرة المصاريف</title>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Kufi+Arabic:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="assets/styles.css">
+</head>
+<body>
+  <div class="noise-overlay"></div>
+  <div class="glow-orb-1"></div>
+  <div class="glow-orb-2"></div>
+
+  <div class="app-layout">
+    <aside class="sidebar" id="sidebar"></aside>
+    <main class="main-content">
+
+      <div class="page-header">
+        <div><h1 class="page-title plain">📊 مقارنة الأشهر</h1><p class="page-sub">قارن إنفاقك بين شهرين</p></div>
+      </div>
+
+      <!-- اختيار الشهرين -->
+      <div class="month-grid" style="margin-bottom:24px">
+        <div>
+          <label class="form-label">الشهر الأول</label>
+          <select class="form-select" id="month-a"></select>
+        </div>
+        <div>
+          <label class="form-label">الشهر الثاني</label>
+          <select class="form-select" id="month-b"></select>
+        </div>
+      </div>
+
+      <div id="compare-body">
+
+        <!-- مقارنة الأرقام الرئيسية -->
+        <div class="chart-card">
+          <h3>💰 المقارنة الرئيسية</h3>
+          <div style="display:flex;gap:12px;margin-bottom:12px;font-size:12px;color:var(--text-3)">
+            <span id="month-a-title" style="font-weight:600;color:var(--accent)"></span>
+            <span>vs</span>
+            <span id="month-b-title" style="font-weight:600;color:var(--text-2)"></span>
+          </div>
+          <div id="stats-compare"></div>
+        </div>
+
+        <!-- مقارنة التصنيفات -->
+        <div class="chart-card">
+          <h3>📁 مقارنة التصنيفات</h3>
+          <div id="cat-compare"></div>
+        </div>
+
+      </div>
+
+    </main>
+  </div>
+
+  <script src="js/storage.js"></script>
+  <script src="js/ui.js"></script>
+  <script src="js/pages/comparison.js"></script>
+</body>
+</html>

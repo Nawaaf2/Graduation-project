@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1.0">
+  <title>التذكيرات | مفكرة المصاريف</title>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Kufi+Arabic:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="assets/styles.css">
+</head>
+<body>
+  <div class="noise-overlay"></div>
+  <div class="glow-orb-1"></div>
+  <div class="glow-orb-2"></div>
+
+  <div class="app-layout">
+    <aside class="sidebar" id="sidebar"></aside>
+    <main class="main-content">
+
+      <div class="page-header">
+        <div><h1 class="page-title plain">🔔 التذكيرات</h1><p class="page-sub">تذكيرات الفواتير والمدفوعات</p></div>
+        <button class="btn btn-accent" onclick="openModal('add-modal')">+ تذكير جديد</button>
+      </div>
+
+      <!-- إحصائيات -->
+      <div class="stats-row">
+        <div class="stat-card"><div class="stat-header"><span class="stat-label">إجمالي التذكيرات</span><div class="stat-icon">🔔</div></div><div class="stat-value" id="stat-total">0</div></div>
+        <div class="stat-card"><div class="stat-header"><span class="stat-label">متأخرة</span><div class="stat-icon">⚠️</div></div><div class="stat-value" id="stat-overdue" style="color:var(--red)">0</div></div>
+        <div class="stat-card"><div class="stat-header"><span class="stat-label">قريبة (3 أيام)</span><div class="stat-icon">⏰</div></div><div class="stat-value" id="stat-soon" style="color:var(--yellow)">0</div></div>
+      </div>
+
+      <!-- اشتراكات قريبة (تلقائي) -->
+      <div class="chart-card" style="margin-bottom:18px">
+        <h3>🔄 اشتراكات تجدد قريباً (14 يوم)</h3>
+        <div id="sub-reminders"><p style="color:var(--text-3)">جاري التحميل...</p></div>
+      </div>
+
+      <!-- تذكيرات مخصصة -->
+      <div class="chart-card">
+        <h3>📋 تذكيراتي المخصصة</h3>
+        <div id="reminders-list"></div>
+      </div>
+
+    </main>
+  </div>
+
+  <!-- مودال الإضافة -->
+  <div id="add-modal" class="modal-overlay hidden"><div class="modal-card">
+    <h3 class="modal-title">إضافة تذكير جديد</h3>
+    <div class="form-row">
+      <div class="form-group"><label class="form-label">العنوان</label><input type="text" class="form-input" id="r-title" placeholder="مثال: فاتورة الكهرباء"></div>
+      <div class="form-group"><label class="form-label">الأيقونة</label><input type="text" class="form-input" id="r-icon" placeholder="⚡"></div>
+    </div>
+    <div class="form-row">
+      <div class="form-group"><label class="form-label">تاريخ الاستحقاق</label><input type="date" class="form-input" id="r-date"></div>
+      <div class="form-group"><label class="form-label">المبلغ (اختياري)</label><input type="number" class="form-input" id="r-amount" placeholder="0"></div>
+    </div>
+    <div class="form-group"><label class="form-label">ملاحظة</label><input type="text" class="form-input" id="r-note" placeholder="تفاصيل إضافية..."></div>
+    <button class="btn btn-accent btn-full" onclick="addReminder()">حفظ التذكير</button>
+    <button class="btn btn-outline btn-full" style="margin-top:8px" onclick="closeModal('add-modal')">إلغاء</button>
+  </div></div>
+
+  <!-- مودال التعديل -->
+  <div id="edit-modal" class="modal-overlay hidden"><div class="modal-card">
+    <h3 class="modal-title">تعديل التذكير</h3>
+    <input type="hidden" id="edit-id">
+    <div class="form-row">
+      <div class="form-group"><label class="form-label">العنوان</label><input type="text" class="form-input" id="edit-title"></div>
+      <div class="form-group"><label class="form-label">الأيقونة</label><input type="text" class="form-input" id="edit-icon"></div>
+    </div>
+    <div class="form-row">
+      <div class="form-group"><label class="form-label">تاريخ الاستحقاق</label><input type="date" class="form-input" id="edit-date"></div>
+      <div class="form-group"><label class="form-label">المبلغ</label><input type="number" class="form-input" id="edit-amount"></div>
+    </div>
+    <div class="form-group"><label class="form-label">ملاحظة</label><input type="text" class="form-input" id="edit-note"></div>
+    <button class="btn btn-accent btn-full" onclick="saveEdit()">حفظ التعديل</button>
+    <button class="btn btn-outline btn-full" style="margin-top:8px" onclick="closeModal('edit-modal')">إلغاء</button>
+  </div></div>
+
+  <script src="js/storage.js"></script>
+  <script src="js/ui.js"></script>
+  <script src="js/pages/reminders.js"></script>
+</body>
+</html>

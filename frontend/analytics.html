@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1.0">
+  <title>التحليلات | مفكرة المصاريف</title>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Kufi+Arabic:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="assets/styles.css">
+</head>
+<body>
+  <div class="noise-overlay"></div>
+  <div class="glow-orb-1"></div>
+  <div class="glow-orb-2"></div>
+
+  <div class="app-layout">
+    <aside class="sidebar" id="sidebar"></aside>
+    <main class="main-content">
+
+      <div class="page-header">
+        <div><h1 class="page-title plain">🔍 التحليلات</h1><p class="page-sub">فهم عميق لعادات إنفاقك</p></div>
+      </div>
+
+      <!-- KPIs -->
+      <div class="stats-row" id="kpi-row">
+        <div class="stat-card"><div class="stat-header"><span class="stat-label">جاري التحليل</span></div><div class="stat-value">...</div></div>
+      </div>
+
+      <div class="analytics-grid">
+
+        <!-- توزيع التصنيفات -->
+        <div class="analytics-card" style="grid-column:span 1">
+          <h3>📁 توزيع المصاريف</h3>
+          <div id="cat-breakdown"></div>
+        </div>
+
+        <!-- اتجاه الإنفاق -->
+        <div class="analytics-card">
+          <h3>📈 اتجاه الإنفاق الشهري</h3>
+          <div class="trend-line" id="trend-bars" style="align-items:flex-end;height:80px;gap:6px"></div>
+          <p id="trend-insight" style="font-size:13px;margin-top:10px;color:var(--text-3)"></p>
+        </div>
+
+      </div>
+
+      <!-- رؤى ذكية -->
+      <div class="analytics-card" style="margin-top:0">
+        <h3>💡 رؤى ذكية</h3>
+        <div id="smart-insights"></div>
+      </div>
+
+    </main>
+  </div>
+
+  <script src="js/storage.js"></script>
+  <script src="js/ui.js"></script>
+  <script src="js/pages/analytics.js"></script>
+</body>
+</html>

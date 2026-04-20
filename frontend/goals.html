@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1.0">
+  <title>الأهداف | مفكرة المصاريف</title>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Kufi+Arabic:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="assets/styles.css">
+</head>
+<body>
+  <div class="noise-overlay"></div>
+  <div class="glow-orb-1"></div>
+  <div class="glow-orb-2"></div>
+
+  <div class="app-layout">
+    <aside class="sidebar" id="sidebar"></aside>
+    <main class="main-content">
+
+      <div class="page-header">
+        <div><h1 class="page-title yellow">🎯 الأهداف المالية</h1><p class="page-sub">تتبع أهدافك وحقق أحلامك</p></div>
+      </div>
+
+      <div class="stats-row">
+        <div class="stat-card"><div class="stat-header"><span class="stat-label">إجمالي الأهداف</span><div class="stat-icon">🎯</div></div><div class="stat-value" id="st-count">—</div></div>
+        <div class="stat-card"><div class="stat-header"><span class="stat-label">إجمالي المُدّخر</span><div class="stat-icon">💎</div></div><div class="stat-value" id="st-saved">—</div></div>
+        <div class="stat-card"><div class="stat-header"><span class="stat-label">نسبة الإنجاز</span><div class="stat-icon">📊</div></div><div class="stat-value" id="st-pct">—</div></div>
+      </div>
+
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:18px">
+        <h3 style="font-size:17px">أهدافي</h3>
+        <button class="btn btn-accent" onclick="openModal('add-modal')">+ هدف جديد</button>
+      </div>
+
+      <div id="goals-list"><p style="color:var(--text-3)">جاري التحميل...</p></div>
+
+    </main>
+  </div>
+
+  <div id="add-modal" class="modal-overlay hidden"><div class="modal-card">
+    <h3 class="modal-title">إضافة هدف جديد</h3>
+    <div class="form-group"><label class="form-label">اسم الهدف</label><input type="text" class="form-input" id="g-name" placeholder="مثال: سيارة جديدة"></div>
+    <div class="form-group"><label class="form-label">الأيقونة</label><input type="text" class="form-input" id="g-icon" placeholder="🚗"></div>
+    <div class="form-row">
+      <div class="form-group"><label class="form-label">المستهدف (ر.س)</label><input type="number" class="form-input" id="g-target" placeholder="50000"></div>
+      <div class="form-group"><label class="form-label">المدخّر حالياً (ر.س)</label><input type="number" class="form-input" id="g-current" placeholder="0"></div>
+    </div>
+    <div class="form-group"><label class="form-label">تاريخ الهدف</label><input type="date" class="form-input" id="g-date"></div>
+    <button class="btn btn-green btn-full" onclick="addGoal()">حفظ الهدف</button>
+    <button class="btn btn-outline btn-full" style="margin-top:8px" onclick="closeModal('add-modal')">إلغاء</button>
+  </div></div>
+
+  <div id="deposit-modal" class="modal-overlay hidden"><div class="modal-card">
+    <h3 class="modal-title">إضافة مبلغ للهدف</h3>
+    <input type="hidden" id="dep-id">
+    <div class="form-group"><label class="form-label">المبلغ (ر.س)</label><input type="number" class="form-input" id="dep-amount" placeholder="0"></div>
+    <button class="btn btn-green btn-full" onclick="saveDeposit()">إضافة ✓</button>
+    <button class="btn btn-outline btn-full" style="margin-top:8px" onclick="closeModal('deposit-modal')">إلغاء</button>
+  </div></div>
+
+  <div id="edit-modal" class="modal-overlay hidden"><div class="modal-card">
+    <h3 class="modal-title">تعديل الهدف</h3>
+    <input type="hidden" id="edit-id">
+    <div class="form-group"><label class="form-label">اسم الهدف</label><input type="text" class="form-input" id="edit-name"></div>
+    <div class="form-group"><label class="form-label">الأيقونة</label><input type="text" class="form-input" id="edit-icon"></div>
+    <div class="form-row">
+      <div class="form-group"><label class="form-label">المستهدف (ر.س)</label><input type="number" class="form-input" id="edit-target"></div>
+      <div class="form-group"><label class="form-label">المدخّر (ر.س)</label><input type="number" class="form-input" id="edit-current"></div>
+    </div>
+    <div class="form-group"><label class="form-label">تاريخ الهدف</label><input type="date" class="form-input" id="edit-date"></div>
+    <button class="btn btn-accent btn-full" onclick="saveEdit()">حفظ التعديل</button>
+    <button class="btn btn-outline btn-full" style="margin-top:8px" onclick="closeModal('edit-modal')">إلغاء</button>
+  </div></div>
+
+  <script src="js/storage.js"></script>
+  <script src="js/ui.js"></script>
+  <script src="js/pages/goals.js"></script>
+</body>
+</html>

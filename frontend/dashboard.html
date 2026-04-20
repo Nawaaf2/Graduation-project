@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1.0">
+  <title>لوحة التحكم | مفكرة المصاريف</title>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Kufi+Arabic:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="assets/styles.css">
+</head>
+<body>
+  <div class="noise-overlay"></div>
+  <div class="glow-orb-1"></div>
+  <div class="glow-orb-2"></div>
+
+  <div class="app-layout">
+    <aside class="sidebar" id="sidebar"></aside>
+    <main class="main-content">
+
+      <div class="page-header">
+        <div>
+          <h1 class="page-title plain" id="welcome-title">مرحباً 👋</h1>
+          <p class="page-sub">ملخص حالتك المالية</p>
+        </div>
+      </div>
+
+      <div id="alerts-section"></div>
+
+      <div class="stats-row">
+        <div class="stat-card" style="cursor:pointer" onclick="location.href='income.html'">
+          <div class="stat-header"><span class="stat-label">إجمالي الدخل</span><div class="stat-icon">💰</div></div>
+          <div class="stat-value" id="s-income">— <span class="stat-currency">ر.س</span></div>
+          <div class="stat-sub">اضغط لإضافة دخل</div>
+        </div>
+        <div class="stat-card" style="cursor:pointer" onclick="location.href='expenses.html'">
+          <div class="stat-header"><span class="stat-label">إجمالي المصروفات</span><div class="stat-icon">💸</div></div>
+          <div class="stat-value" id="s-expenses">— <span class="stat-currency">ر.س</span></div>
+          <div class="stat-sub">اضغط لإضافة مصروف</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-header"><span class="stat-label">الرصيد</span><div class="stat-icon">📊</div></div>
+          <div class="stat-value" id="s-balance">— <span class="stat-currency">ر.س</span></div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-header"><span class="stat-label">مصروف هذا الشهر</span><div class="stat-icon">📅</div></div>
+          <div class="stat-value" id="s-monthly">— <span class="stat-currency">ر.س</span></div>
+          <div class="stat-sub" id="budget-warn"></div>
+        </div>
+      </div>
+
+      <div style="margin-bottom:20px">
+        <h3 style="font-size:16px;margin-bottom:12px;color:var(--text-2)">🎯 تقدم الأهداف</h3>
+        <div id="goals-preview"><p style="color:var(--text-3)">جاري التحميل...</p></div>
+      </div>
+
+      <div>
+        <h3 style="font-size:16px;margin-bottom:12px;color:var(--text-2)">📋 آخر العمليات</h3>
+        <div id="recent-list"><p style="color:var(--text-3)">جاري التحميل...</p></div>
+      </div>
+
+    </main>
+  </div>
+
+  <script src="js/storage.js"></script>
+  <script src="js/ui.js"></script>
+  <script src="js/pages/dashboard.js"></script>
+</body>
+</html>
