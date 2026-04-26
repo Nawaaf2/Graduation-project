@@ -3,11 +3,12 @@ checkAuth();
 renderSidebar('analytics');
 
 const COLORS = ['#6366f1','#10b981','#eab308','#ef4444','#ec4899','#8b5cf6','#f97316','#14b8a6'];
-const CAT_ICONS = {'طعام':'🍽️','مواصلات':'🚗','تسوق':'🛍️','فواتير':'📄','ترفيه':'🎬','صحة':'💊','تعليم':'📚','أخرى':'📌'};
+const CAT_ICONS_DEFAULT = {'طعام':'🍽️','مواصلات':'🚗','تسوق':'🛍️','فواتير':'📄','ترفيه':'🎬','صحة':'💊','تعليم':'📚','أخرى':'📌'};
 
 (async () => {
   try {
-    const [expenses, incomeList] = await Promise.all([Storage.getExpenses(), Storage.getIncome()]);
+    const [expenses, incomeList, categories] = await Promise.all([Storage.getExpenses(), Storage.getIncome(), Storage.getCategories()]);
+    const CAT_ICONS = {...CAT_ICONS_DEFAULT, ...Object.fromEntries((categories||[]).map(c => [c.name, c.icon||'📌']))};
     const exp = expenses||[], inc = incomeList||[];
 
     const totalExp = exp.reduce((s,e) => s+parseFloat(e.amount||0), 0);
@@ -78,11 +79,13 @@ const CAT_ICONS = {'طعام':'🍽️','مواصلات':'🚗','تسوق':'🛍
 
     if (months.length >= 2) {
       document.getElementById('trend-bars').innerHTML = months.map((m, i) => {
-        const h = Math.max(((vals[i]/maxM)*100), 4);
+        const h = Math.max(Math.round((vals[i]/maxM)*50), 3);
         const isLast = i === months.length-1;
-        return `<div style="flex:1;display:flex;flex-direction:column;align-items:center;gap:4px">
+        return `<div style="flex:1;display:flex;flex-direction:column;align-items:center;gap:2px">
           <span style="font-size:11px;color:var(--text-3)">${fmt(vals[i])}</span>
-          <div class="trend-bar" style="height:${h}%;background:${isLast?'var(--accent)':COLORS[i%COLORS.length]};opacity:${isLast?1:0.6}"></div>
+          <div style="flex:1;width:100%;display:flex;align-items:flex-end">
+            <div class="trend-bar" style="height:${h}px;width:100%;background:${isLast?'var(--accent)':COLORS[i%COLORS.length]};opacity:${isLast?1:0.6}"></div>
+          </div>
           <span style="font-size:10px;color:var(--text-3)">${m.slice(5)}</span>
         </div>`;
       }).join('');

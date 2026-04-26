@@ -15,15 +15,16 @@ function renderGoals() {
   document.getElementById('goals-list').innerHTML = allGoals.length ? allGoals.map(g => {
     const pct = Math.min((parseFloat(g.current||0)/parseFloat(g.target))*100, 100);
     saved += parseFloat(g.current||0); target += parseFloat(g.target);
-    const daysLeft = Math.ceil((new Date(g.targetDate||g.target_date) - new Date()) / 86400000);
-    const urgency  = daysLeft<30 ? 'color:var(--red)' : daysLeft<90 ? 'color:var(--yellow)' : 'color:var(--text-3)';
+    const tDate    = g.targetDate || g.target_date;
+    const daysLeft = tDate ? Math.ceil((new Date(tDate) - new Date()) / 86400000) : null;
+    const urgency  = daysLeft === null ? 'color:var(--text-3)' : daysLeft<30 ? 'color:var(--red)' : daysLeft<90 ? 'color:var(--yellow)' : 'color:var(--text-3)';
     return `<div class="goal-card">
       <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:14px;flex-wrap:wrap;gap:10px">
         <div style="display:flex;align-items:center;gap:14px">
           <div style="width:48px;height:48px;background:rgba(0,0,0,0.1);border-radius:14px;display:flex;align-items:center;justify-content:center;font-size:26px">${g.icon||'🎯'}</div>
           <div>
             <div style="font-size:17px;font-weight:600">${g.name}</div>
-            <div style="font-size:12px;${urgency}">⏰ ${daysLeft>0?daysLeft+' يوم متبقي':'انتهى الموعد'}</div>
+            <div style="font-size:12px;${urgency}">⏰ ${daysLeft===null?'لا يوجد موعد':daysLeft>0?daysLeft+' يوم متبقي':'انتهى الموعد'}</div>
           </div>
         </div>
         <div style="text-align:left">
@@ -90,8 +91,16 @@ function editGoal(id) {
 
 async function saveEdit() {
   const id = parseInt(document.getElementById('edit-id').value);
+  const existing = allGoals.find(x => x.id === id);
   try {
-    await Storage.updateGoal(id, {name:document.getElementById('edit-name').value, icon:document.getElementById('edit-icon').value, target:parseFloat(document.getElementById('edit-target').value), current:parseFloat(document.getElementById('edit-current').value), targetDate:document.getElementById('edit-date').value});
+    await Storage.updateGoal(id, {
+      name:       document.getElementById('edit-name').value,
+      icon:       document.getElementById('edit-icon').value,
+      target:     parseFloat(document.getElementById('edit-target').value),
+      current:    parseFloat(document.getElementById('edit-current').value),
+      targetDate: document.getElementById('edit-date').value || null,
+      color:      existing?.color || COLORS[0]
+    });
     closeModal('edit-modal'); await loadGoals();
   } catch(e) { alert(e.message); }
 }

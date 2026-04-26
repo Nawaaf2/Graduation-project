@@ -63,8 +63,15 @@ function editInc(id) {
 
 async function saveEdit() {
   const id = parseInt(document.getElementById('edit-id').value);
+  const existing = allIncome.find(x => x.id === id);
   try {
-    await Storage.updateIncome(id, {source:document.getElementById('edit-source').value, amount:parseFloat(document.getElementById('edit-amount').value), date:document.getElementById('edit-date').value});
+    await Storage.updateIncome(id, {
+      source:      document.getElementById('edit-source').value,
+      amount:      parseFloat(document.getElementById('edit-amount').value),
+      date:        document.getElementById('edit-date').value,
+      icon:        existing?.icon || '💰',
+      description: existing?.description || ''
+    });
     closeModal('edit-modal'); await loadIncome();
   } catch(e) { alert(e.message); }
 }

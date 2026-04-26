@@ -4,12 +4,13 @@ if (!user) throw new Error('not logged in');
 
 document.getElementById('welcome-title').textContent = `مرحباً، ${user.name} 👋`;
 
-const CAT_ICONS = {'طعام':'🍽️','مواصلات':'🚗','تسوق':'🛍️','فواتير':'📄','ترفيه':'🎬','صحة':'💊','تعليم':'📚','أخرى':'📌'};
+const CAT_ICONS_DEFAULT = {'طعام':'🍽️','مواصلات':'🚗','تسوق':'🛍️','فواتير':'📄','ترفيه':'🎬','صحة':'💊','تعليم':'📚','أخرى':'📌'};
 
 (async () => {
   renderSidebar('dashboard');
   try {
-    const data = await Storage.getDashboard();
+    const [data, categories] = await Promise.all([Storage.getDashboard(), Storage.getCategories()]);
+    const CAT_ICONS = {...CAT_ICONS_DEFAULT, ...Object.fromEntries((categories||[]).map(c => [c.name, c.icon||'📌']))};
     if (!data) return;
 
     document.getElementById('s-income').innerHTML   = `${fmt(data.totalIncome)} <span class="stat-currency">ر.س</span>`;

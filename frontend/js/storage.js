@@ -4,9 +4,9 @@ const API_URL = 'http://localhost:8080/api';
 
 const Storage = {
 
-  getToken()      { return sessionStorage.getItem('token'); },
-  setToken(t)     { sessionStorage.setItem('token', t); },
-  clearToken()    { sessionStorage.removeItem('token'); sessionStorage.removeItem('currentUser'); },
+  getToken()      { return localStorage.getItem('token'); },
+  setToken(t)     { localStorage.setItem('token', t); },
+  clearToken()    { localStorage.removeItem('token'); localStorage.removeItem('currentUser'); },
 
   _headers() {
     return { 'Content-Type':'application/json', 'Authorization':`Bearer ${this.getToken()}` };
@@ -17,7 +17,10 @@ const Storage = {
     if (body) options.body = JSON.stringify(body);
     const res = await fetch(`${API_URL}${path}`, options);
     if (res.status === 401) { this.clearToken(); window.location.href='login.html'; return null; }
-    const data = await res.json();
+    if (res.status === 204) return null;
+    const text = await res.text();
+    if (!text || !text.trim()) return null;
+    const data = JSON.parse(text);
     if (!res.ok) throw new Error(data.error || 'حدث خطأ');
     return data;
   },
@@ -26,14 +29,14 @@ const Storage = {
   async register(name, email, password) {
     try {
       const d = await this._req('POST','/auth/register',{name,email,password});
-      if (d?.token) { this.setToken(d.token); sessionStorage.setItem('currentUser',JSON.stringify({name:d.name,email:d.email,id:d.userId})); }
+      if (d?.token) { this.setToken(d.token); localStorage.setItem('currentUser',JSON.stringify({name:d.name,email:d.email,id:d.userId})); }
       return { success:true };
     } catch(e) { return { success:false, message:e.message }; }
   },
   async login(email, password) {
     try {
       const d = await this._req('POST','/auth/login',{email,password});
-      if (d?.token) { this.setToken(d.token); sessionStorage.setItem('currentUser',JSON.stringify({name:d.name,email:d.email,id:d.userId})); }
+      if (d?.token) { this.setToken(d.token); localStorage.setItem('currentUser',JSON.stringify({name:d.name,email:d.email,id:d.userId})); }
       return { success:true };
     } catch(e) { return { success:false, message:e.message }; }
   },
@@ -76,6 +79,6 @@ const Storage = {
   calcTotal(list,field='amount') { return (list||[]).reduce((s,i)=>s+parseFloat(i[field]||0),0); }
 };
 
-function getCurrentUser() { const u=sessionStorage.getItem('currentUser'); return u?JSON.parse(u):null; }
+function getCurrentUser() { const u=localStorage.getItem('currentUser'); return u?JSON.parse(u):null; }
 function checkAuth()       { const u=getCurrentUser(); if(!u||!Storage.getToken()){window.location.href='login.html';return null;} return u; }
 function logout()          { Storage.clearToken(); window.location.href='login.html'; }

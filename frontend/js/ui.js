@@ -1,20 +1,13 @@
 // ===== ui.js — وظائف مشتركة =====
-const T = {
-  ar:{dashboard:'لوحة التحكم',expenses:'إضافة مصروف',income:'إضافة دخل',categories:'التصنيفات',goals:'الأهداف المالية',subscriptions:'الاشتراكات',reports:'التقارير',comparison:'مقارنة الأشهر',analytics:'التحليلات',reminders:'التذكيرات',settings:'الإعدادات',logout:'تسجيل خروج',dark:'داكن',light:'فاتح',sar:'ر.س',confirm_del:'هل أنت متأكد من الحذف؟',no_data:'لا توجد بيانات'},
-  en:{dashboard:'Dashboard',expenses:'Add Expense',income:'Add Income',categories:'Categories',goals:'Goals',subscriptions:'Subscriptions',reports:'Reports',comparison:'Month Compare',analytics:'Analytics',reminders:'Reminders',settings:'Settings',logout:'Logout',dark:'Dark',light:'Light',sar:'SAR',confirm_del:'Are you sure?',no_data:'No data yet'}
-};
+const T = {dashboard:'لوحة التحكم',expenses:'إضافة مصروف',income:'إضافة دخل',categories:'التصنيفات',goals:'الأهداف المالية',subscriptions:'الاشتراكات',reports:'التقارير',comparison:'مقارنة الأشهر',analytics:'التحليلات',reminders:'التذكيرات',settings:'الإعدادات',logout:'تسجيل خروج',dark:'داكن',light:'فاتح',sar:'ر.س',confirm_del:'هل أنت متأكد من الحذف؟',no_data:'لا توجد بيانات'};
 
-function getLang()  { return localStorage.getItem('mufakkira_lang')  || 'ar'; }
 function getTheme() { return localStorage.getItem('mufakkira_theme') || 'dark'; }
-function t(k)       { return T[getLang()]?.[k] || T.ar[k] || k; }
+function t(k)       { return T[k] || k; }
 function fmt(n)     { return Number(n||0).toLocaleString('ar-SA',{minimumFractionDigits:0,maximumFractionDigits:2}); }
-function fmtDate(d) { if(!d)return''; return new Date(d).toLocaleDateString(getLang()==='en'?'en-GB':'ar-SA',{year:'numeric',month:'short',day:'numeric'}); }
+function fmtDate(d) { if(!d)return''; return new Date(d).toLocaleDateString('ar-SA',{year:'numeric',month:'short',day:'numeric'}); }
 
 function applyThemeAndLang() {
   document.body.dataset.theme = getTheme();
-  document.body.dataset.lang  = getLang();
-  document.documentElement.lang = getLang();
-  document.documentElement.dir  = getLang()==='en'?'ltr':'rtl';
 }
 
 function toggleTheme() {
@@ -31,15 +24,10 @@ function _updateThemeBtn(btn, theme) {
       <span class="${!isDark?'active-pill':''}">☀️</span>
     </div>`;
 }
-function toggleLang() {
-  localStorage.setItem('mufakkira_lang', getLang()==='ar'?'en':'ar');
-  location.reload();
-}
-
 async function renderSidebar(activePage) {
   const el = document.getElementById('sidebar');
   if (!el) return;
-  const lang = getLang(), isDark = getTheme()==='dark';
+  const isDark = getTheme()==='dark';
   const pages = [
     {id:'dashboard',     href:'dashboard.html',     icon:'📊'},
     {id:'expenses',      href:'expenses.html',      icon:'➖'},
@@ -61,7 +49,7 @@ async function renderSidebar(activePage) {
   } catch(e) {}
 
   el.innerHTML = `
-    <div class="sidebar-logo"><div class="sidebar-logo-icon">💰</div><span>${lang==='en'?'Mufakkira':'مُفكّرة'}</span></div>
+    <div class="sidebar-logo"><div class="sidebar-logo-icon">💰</div><span>مُفكّرة</span></div>
     <nav class="nav-menu">
       ${pages.map(p=>`
         <a href="${p.href}" class="nav-item ${activePage===p.id?'active':''}">
@@ -78,10 +66,7 @@ async function renderSidebar(activePage) {
           <span class="${!isDark?'active-pill':''}">☀️</span>
         </div>
       </button>
-      <button class="btn-lang" onclick="toggleLang()" style="width:100%;justify-content:center;display:flex">
-        ${lang==='ar'?'🌐 English':'🌐 عربي'}
-      </button>
-      <button class="btn-logout" onclick="logout()"><span>🚪</span><span>${t('logout')}</span></button>
+<button class="btn-logout" onclick="logout()"><span>🚪</span><span>${t('logout')}</span></button>
     </div>`;
 }
 

@@ -103,12 +103,14 @@ function editExpense(id) {
 
 async function saveEdit() {
   const id = parseInt(document.getElementById('edit-id').value);
+  const existing = allExpenses.find(x => x.id === id);
   try {
     await Storage.updateExpense(id, {
       category:    document.getElementById('edit-cat').value,
       amount:      parseFloat(document.getElementById('edit-amount').value),
       description: document.getElementById('edit-desc').value,
-      date:        document.getElementById('edit-date').value
+      date:        document.getElementById('edit-date').value,
+      notes:       existing?.notes || ''
     });
     closeModal('edit-modal');
     await loadExpenses();

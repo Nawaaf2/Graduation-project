@@ -29,7 +29,10 @@ public class DashboardController {
         BigDecimal totalIncome   = incomeRepo.sumByUserId(userId);
         BigDecimal totalExpenses = expenseRepo.sumByUserId(userId);
         BigDecimal monthly       = expenseRepo.sumThisMonth(userId);
-        BigDecimal balance       = totalIncome.subtract(totalExpenses);
+        if (totalIncome   == null) totalIncome   = BigDecimal.ZERO;
+        if (totalExpenses == null) totalExpenses = BigDecimal.ZERO;
+        if (monthly       == null) monthly       = BigDecimal.ZERO;
+        BigDecimal balance = totalIncome.subtract(totalExpenses);
 
         LocalDate today   = LocalDate.now();
         LocalDate in7days = today.plusDays(7);
