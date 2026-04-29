@@ -1,0 +1,23 @@
+# Environment variables — لا ترفع هذا الملف أبداً
+.env
+.env.local
+.env.*.local
+
+# Build output
+backend/target/
+frontend/node_modules/
+frontend/.next/
+frontend/dist/
+frontend/build/
+
+# IDE
+.idea/
+.vscode/
+*.iml
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log
