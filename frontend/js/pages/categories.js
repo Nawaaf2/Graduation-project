@@ -21,11 +21,11 @@ function renderCats() {
       <div style="font-size:40px;margin-bottom:8px">${c.icon||'📌'}</div>
       <div style="font-size:16px;font-weight:600">${c.name}</div>
       <div style="display:flex;justify-content:space-between;margin-top:10px;padding-top:10px;border-top:1px solid var(--border);font-size:12px;color:var(--text-3)">
-        <span>📋 ${rel.length} عمليات</span><span>💰 ${fmt(total)} ر.س</span>
+        <span><i class="fa-solid fa-receipt"></i> ${rel.length} عمليات</span><span><i class="fa-solid fa-sack-dollar" style="color: rgb(255, 212, 59);"></i> ${fmt(total)} ر.س</span>
       </div>
-      <button class="btn-outline" style="width:100%;margin-top:10px;font-size:12px;color:var(--red);border-color:rgba(239,68,68,0.3)" onclick="delCat(${c.id})">🗑️ حذف</button>
+      <button class="btn-outline" style="width:100%;margin-top:10px;font-size:12px;color:var(--red);border-color:rgba(239,68,68,0.3)" onclick="delCat(${c.id})"><i class="fa-solid fa-trash-can"></i> حذف</button>
     </div>`;
-  }).join('') : '<div class="empty-state"><div class="empty-icon">📁</div><p>لا توجد تصنيفات</p></div>';
+  }).join('') : '<div class="empty-state"><div class="empty-icon"><i class="fa-solid fa-layer-group"></i></div><p>لا توجد تصنيفات</p></div>';
 }
 
 function toggleForm() {
@@ -35,13 +35,12 @@ function toggleForm() {
 
 async function addCat() {
   const name  = document.getElementById('c-name').value.trim();
-  const icon  = document.getElementById('c-icon').value || '📌';
+  const icon  ='📌';
   const color = document.getElementById('c-color').value;
   if (!name) { alert('يرجى إدخال اسم التصنيف'); return; }
   try {
-    await Storage.addCategory({name, icon, color});
+    await Storage.addCategory({name, color});
     document.getElementById('c-name').value = '';
-    document.getElementById('c-icon').value = '';
     toggleForm(); await loadAll();
   } catch(e) { alert(e.message); }
 }

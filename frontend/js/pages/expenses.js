@@ -58,7 +58,7 @@ function renderList() {
   document.getElementById('exp-list').innerHTML = data.length ? data.map(e => `
     <div class="exp-item">
       <div style="display:flex;align-items:center;gap:10px;flex:1;min-width:0">
-        <div style="width:36px;height:36px;background:rgba(239,68,68,0.1);border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0">${CAT_ICONS[e.category]||'💸'}</div>
+        <div style="width:36px;height:36px;background:rgba(239,68,68,0.1);border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0">${CAT_ICONS[e.category] || "📌" }</div>
         <div style="min-width:0">
           <div style="font-size:14px;font-weight:500;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${e.description||'—'}</div>
           <div style="font-size:11px;color:var(--text-3)">${e.category||''} • ${e.date||''}</div>
@@ -66,11 +66,11 @@ function renderList() {
       </div>
       <div style="display:flex;align-items:center;gap:8px;flex-shrink:0">
         <span style="font-size:15px;font-weight:700;color:var(--red)">-${fmt(e.amount)} ر.س</span>
-        <button class="btn-icon" onclick="editExpense(${e.id})">✏️</button>
-        <button class="btn-icon" style="color:var(--red)" onclick="delExp(${e.id})">🗑️</button>
+        <button class="btn-icon" onclick="editExpense(${e.id})"><i class="fa-solid fa-pen-to-square"></i></button>
+        <button class="btn-icon" style="color:var(--red)" onclick="delExp(${e.id})"><i class="fa-solid fa-trash-can"></i></button>
       </div>
     </div>`).join('')
-  : '<div class="empty-state"><div class="empty-icon">🗂️</div><p>لا توجد نتائج</p></div>';
+  : '<div class="empty-state"><div class="empty-icon"><i class="fa-solid fa-circle-minus"></i></div><p>لا توجد نتائج</p></div>';
 }
 
 async function saveExpense() {

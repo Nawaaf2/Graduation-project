@@ -89,25 +89,25 @@ function renderReminders() {
       </div>
       <div style="display:flex;align-items:center;gap:8px;flex-shrink:0">
         ${days !== null ? `<span style="font-size:12px;font-weight:600;color:${statusColor(days)}">${statusLabel(days)}</span>` : ''}
-        <button class="btn-icon" onclick="editReminder(${r.id})">✏️</button>
-        <button class="btn-icon" style="color:var(--red)" onclick="delReminder(${r.id})">🗑️</button>
+        <button class="btn-icon" onclick="editReminder(${r.id})"><i class="fa-solid fa-pen-to-square"></i></button>
+        <button class="btn-icon" style="color:var(--red)" onclick="delReminder(${r.id})"><i class="fa-solid fa-trash-can"></i></button>
       </div>
     </div>`;
-  }).join('') : '<div class="empty-state"><div class="empty-icon">🔔</div><p>لا توجد تذكيرات — أضف تذكيرك الأول</p></div>';
+  }).join('') : '<div class="empty-state"><div class="empty-icon"><i class="fa-solid fa-bell"></i></div><p>لا توجد تذكيرات — أضف تذكيرك الأول</p></div>';
 }
 
 function addReminder() {
   const title   = document.getElementById('r-title').value.trim();
-  const icon    = document.getElementById('r-icon').value  || '🔔';
+  const icon    = "🔔"
   const dueDate = document.getElementById('r-date').value;
   const amount  = document.getElementById('r-amount').value;
   const note    = document.getElementById('r-note').value.trim();
   if (!title) { alert('يرجى إدخال عنوان التذكير'); return; }
   const reminders = getReminders();
-  reminders.push({ id:Date.now(), title, icon, dueDate, amount:amount?parseFloat(amount):null, note });
+  reminders.push({ id:Date.now(), title, dueDate, amount:amount?parseFloat(amount):null, note });
   saveReminders(reminders);
   closeModal('add-modal');
-  ['r-title','r-icon','r-date','r-amount','r-note'].forEach(id => document.getElementById(id).value='');
+  ['r-title','r-date','r-amount','r-note'].forEach(id => document.getElementById(id).value='');
   renderReminders();
 }
 
@@ -115,7 +115,6 @@ function editReminder(id) {
   const r = getReminders().find(x=>x.id===id); if (!r) return;
   document.getElementById('edit-id').value     = id;
   document.getElementById('edit-title').value  = r.title;
-  document.getElementById('edit-icon').value   = r.icon||'';
   document.getElementById('edit-date').value   = r.dueDate||'';
   document.getElementById('edit-amount').value = r.amount||'';
   document.getElementById('edit-note').value   = r.note||'';
@@ -127,7 +126,7 @@ function saveEdit() {
   const reminders = getReminders().map(r => r.id===id ? {
     ...r,
     title:   document.getElementById('edit-title').value.trim(),
-    icon:    document.getElementById('edit-icon').value||'🔔',
+    icon: "🔔",
     dueDate: document.getElementById('edit-date').value,
     amount:  document.getElementById('edit-amount').value ? parseFloat(document.getElementById('edit-amount').value) : null,
     note:    document.getElementById('edit-note').value.trim()

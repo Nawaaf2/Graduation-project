@@ -23,7 +23,7 @@ function renderSubs() {
     else                          { monthly += parseFloat(s.amount)*4;  yearly += parseFloat(s.amount)*52; }
     return `<div class="sub-item">
       <div style="display:flex;align-items:center;gap:14px;flex:1">
-        <div class="sub-icon">${s.icon||'📌'}</div>
+        <div class="sub-icon">${'📌'}</div>
         <div>
           <div style="font-size:15px;font-weight:500">${s.name}</div>
           <div style="font-size:12px;color:var(--text-3)">${cycleLabel[s.cycle]||s.cycle} • ${s.renewal||''}</div>
@@ -31,12 +31,12 @@ function renderSubs() {
       </div>
       <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap">
         <span style="font-size:15px;font-weight:700;color:var(--red)">-${fmt(s.amount)} ر.س</span>
-        ${isSoon ? `<span class="badge-soon">⏰ ${days} أيام</span>` : '<span class="badge-ok">✓ نشط</span>'}
-        <button class="btn-icon" onclick="editSub(${s.id})">✏️</button>
-        <button class="btn-icon" style="color:var(--red)" onclick="delSub(${s.id})">🗑️</button>
+        ${isSoon ? `<span class="badge-soon"><i class="fa-solid fa-hourglass-half"></i> ${days} أيام</span>` : '<span class="badge-ok">✓ نشط</span>'}
+        <button class="btn-icon" onclick="editSub(${s.id})"><i class="fa-solid fa-pen-to-square"></i></button>
+        <button class="btn-icon" style="color:var(--red)" onclick="delSub(${s.id})"><i class="fa-solid fa-trash-can"></i></button>
       </div>
     </div>`;
-  }).join('') : '<div class="empty-state"><div class="empty-icon">🔄</div><p>لا توجد اشتراكات</p></div>';
+  }).join('') : '<div class="empty-state"><div class="empty-icon"><i class="fa-solid fa-rotate"></i></div><p>لا توجد اشتراكات</p></div>';
   document.getElementById('s-monthly').innerHTML = `${fmt(Math.round(monthly))} <span class="stat-currency">ر.س</span>`;
   document.getElementById('s-yearly').innerHTML  = `${fmt(Math.round(yearly))} <span class="stat-currency">ر.س</span>`;
   document.getElementById('s-due').textContent   = due;
@@ -44,7 +44,7 @@ function renderSubs() {
 
 async function addSub() {
   const name    = document.getElementById('s-name').value.trim();
-  const icon    = document.getElementById('s-icon').value || '📌';
+  const icon    = '📌';
   const amount  = parseFloat(document.getElementById('s-amount').value);
   const cycle   = document.getElementById('s-cycle').value;
   const renewal = document.getElementById('s-renewal').value;
@@ -52,7 +52,7 @@ async function addSub() {
   try {
     await Storage.addSubscription({name, icon, amount, cycle, renewal, color:COLORS[Math.floor(Math.random()*COLORS.length)]});
     closeModal('add-modal');
-    ['s-name','s-icon','s-amount','s-renewal'].forEach(id => document.getElementById(id).value = '');
+    ['s-name','s-amount','s-renewal'].forEach(id => document.getElementById(id).value = '');
     await loadSubs();
   } catch(e) { alert(e.message); }
 }
@@ -61,7 +61,7 @@ function editSub(id) {
   const s = allSubs.find(x => x.id===id); if (!s) return;
   document.getElementById('edit-id').value      = id;
   document.getElementById('edit-name').value    = s.name;
-  document.getElementById('edit-icon').value    = s.icon||'';
+
   document.getElementById('edit-amount').value  = s.amount;
   document.getElementById('edit-cycle').value   = s.cycle;
   document.getElementById('edit-renewal').value = s.renewal||'';
@@ -71,7 +71,7 @@ function editSub(id) {
 async function saveEdit() {
   const id = parseInt(document.getElementById('edit-id').value);
   try {
-    await Storage.updateSubscription(id, {name:document.getElementById('edit-name').value, icon:document.getElementById('edit-icon').value, amount:parseFloat(document.getElementById('edit-amount').value), cycle:document.getElementById('edit-cycle').value, renewal:document.getElementById('edit-renewal').value});
+    await Storage.updateSubscription(id, {name:document.getElementById('edit-name').value, amount:parseFloat(document.getElementById('edit-amount').value), cycle:document.getElementById('edit-cycle').value, renewal:document.getElementById('edit-renewal').value});
     closeModal('edit-modal'); await loadSubs();
   } catch(e) { alert(e.message); }
 }

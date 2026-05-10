@@ -1,4 +1,5 @@
 <!DOCTYPE html>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 <html lang="ar" dir="rtl">
 <head>
   <meta charset="UTF-8">
@@ -17,8 +18,8 @@
     <main class="main-content">
 
       <div class="page-header">
-        <div><h1 class="page-title plain">➖ إضافة مصروف</h1><p class="page-sub">سجّل مصروفك مع التفاصيل</p></div>
-        <button class="btn-export" onclick="doExport()">📥 تصدير CSV</button>
+        <div><h1 class="page-title plain"> إضافة مصروف</h1><p class="page-sub">سجّل مصروفك مع التفاصيل</p></div>
+        <button class="btn-export" onclick="doExport()"><i class="fa-solid fa-file-import"></i> تصدير</button>
       </div>
 
       <div id="success-msg" class="success-msg"></div>
@@ -44,10 +45,10 @@
         <button class="btn btn-red btn-full" onclick="saveExpense()">➖ حفظ المصروف</button>
 
         <div style="margin-top:36px">
-          <h3 style="font-size:16px;margin-bottom:14px;color:var(--text-2)">📋 المصروفات المسجلة</h3>
+          <h3 style="font-size:16px;margin-bottom:14px;color:var(--text-2)"><i class="fa-regular fa-clipboard"></i> المصروفات المسجلة</h3>
           <div class="filter-bar">
             <div class="search-wrap">
-              <span class="search-icon">🔍</span>
+              <span class="search-icon"><i class="fa-solid fa-magnifying-glass"></i></span>
               <input type="text" class="search-input" id="search" placeholder="بحث..." oninput="renderList()">
             </div>
             <select class="form-select" id="filter-cat" onchange="renderList()" style="flex:1;min-width:120px;padding:9px 13px;border-radius:40px">

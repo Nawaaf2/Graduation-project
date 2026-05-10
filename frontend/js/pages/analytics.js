@@ -30,17 +30,17 @@ const CAT_ICONS_DEFAULT = {'طعام':'🍽️','مواصلات':'🚗','تسو�
 
     document.getElementById('kpi-row').innerHTML = `
       <div class="stat-card">
-        <div class="stat-header"><span class="stat-label">نسبة التوفير</span><div class="stat-icon">💎</div></div>
+        <div class="stat-header"><span class="stat-label">نسبة التوفير</span><div class="stat-icon"><i class="fa-solid fa-money-bill-wave" style="color: rgb(99, 230, 190);"></i></div></div>
         <div class="stat-value" style="color:${savingsRate>=20?'var(--green)':savingsRate>=0?'var(--yellow)':'var(--red)'}">${savingsRate}%</div>
-        <div class="stat-sub">${savingsRate>=20?'ممتاز 🎉':savingsRate>=10?'جيد 👍':'يحتاج تحسين ⚠️'}</div>
+        <div class="stat-sub">${savingsRate>=20?'ممتاز 🎉':savingsRate>=10?'جيد <i class="fa-solid fa-thumbs-up" style="color: rgb(255, 212, 59);"></i>':'يحتاج تحسين <i class="fa-solid fa-triangle-exclamation" style="color: rgb(255, 212, 59);"></i>'}</div>
       </div>
       <div class="stat-card">
-        <div class="stat-header"><span class="stat-label">متوسط الإنفاق اليومي</span><div class="stat-icon">📅</div></div>
+        <div class="stat-header"><span class="stat-label">متوسط الإنفاق اليومي</span><div class="stat-icon"><i class="fa-regular fa-calendar-days"></i></div></div>
         <div class="stat-value">${fmt(avgDaily)} <span class="stat-currency">ر.س</span></div>
         <div class="stat-sub">خلال ${dayCount} يوم</div>
       </div>
       <div class="stat-card">
-        <div class="stat-header"><span class="stat-label">أعلى تصنيف إنفاق</span><div class="stat-icon">🏆</div></div>
+        <div class="stat-header"><span class="stat-label">أعلى تصنيف إنفاق</span><div class="stat-icon"><i class="fa-solid fa-ranking-star" style="color: rgb(255, 212, 59);"></i></div></div>
         <div class="stat-value" style="font-size:18px">${topCat ? topCat[0] : '—'}</div>
         <div class="stat-sub">${topCat ? fmt(topCat[1])+' ر.س' : ''}</div>
       </div>
@@ -56,7 +56,7 @@ const CAT_ICONS_DEFAULT = {'طعام':'🍽️','مواصلات':'🚗','تسو�
     document.getElementById('cat-breakdown').innerHTML = sorted.length ? sorted.map(([cat, total], i) => {
       const pct = ((total/totalExp)*100).toFixed(1);
       return `<div class="insight-item">
-        <div class="insight-icon" style="background:${COLORS[i%COLORS.length]}22">${CAT_ICONS[cat]||'💰'}</div>
+        <div class="insight-icon" style="background:${COLORS[i%COLORS.length]}22">${CAT_ICONS[cat]||'<i class="fa-solid fa-sack-dollar"></i>'}</div>
         <div style="flex:1">
           <div style="display:flex;justify-content:space-between;margin-bottom:5px;font-size:13px">
             <span>${cat}</span>
@@ -102,13 +102,13 @@ const CAT_ICONS_DEFAULT = {'طعام':'🍽️','مواصلات':'🚗','تسو�
       document.getElementById('trend-bars').innerHTML = '<p style="color:var(--text-3);font-size:13px">أضف بيانات لأكثر من شهر</p>';
     }
 
-    // ===== رؤى ذكية =====
+    // ===== الافكار =====
     const insights = [];
-    if (savingsRate < 10) insights.push({ icon:'⚠️', color:'rgba(239,68,68,0.1)', text:`نسبة توفيرك ${savingsRate}% — يُنصح بتوفير 20% على الأقل من دخلك` });
+    if (savingsRate < 10) insights.push({ icon:'<i class="fa-solid fa-triangle-exclamation" style="color: rgb(255, 212, 59);"></i>', color:'rgba(239,68,68,0.1)', text:`نسبة توفيرك ${savingsRate}% — يُنصح بتوفير 20% على الأقل من دخلك` });
     if (topCat && totalExp > 0 && (catMap[topCat[0]]/totalExp) > 0.4) insights.push({ icon:'🔍', color:'rgba(234,179,8,0.1)', text:`${topCat[0]} يستنزف ${((catMap[topCat[0]]/totalExp)*100).toFixed(0)}% من إنفاقك — هل يمكن تقليله؟` });
-    if (avgDaily > 200) insights.push({ icon:'📊', color:'rgba(239,68,68,0.1)', text:`متوسط إنفاقك اليومي مرتفع (${fmt(avgDaily)} ر.س) — راجع مصاريفك اليومية` });
+    if (avgDaily > 200) insights.push({ icon:'<i class="fa-solid fa-chart-simple"></i>', color:'rgba(239,68,68,0.1)', text:`متوسط إنفاقك اليومي مرتفع (${fmt(avgDaily)} ر.س) — راجع مصاريفك اليومية` });
     if (balance > 0) insights.push({ icon:'✅', color:'rgba(16,185,129,0.1)', text:`أنت في الإيجاب — وفّرت ${fmt(balance)} ر.س حتى الآن` });
-    if (exp.length === 0) insights.push({ icon:'💡', color:'rgba(99,102,241,0.1)', text:'ابدأ بتسجيل مصاريفك للحصول على تحليلات دقيقة' });
+    if (exp.length === 0) insights.push({ icon:'<i class="fa-solid fa-lightbulb" style="color: rgb(255, 212, 59);"></i>', color:'rgba(99,102,241,0.1)', text:'ابدأ بتسجيل مصاريفك للحصول على تحليلات دقيقة' });
 
     document.getElementById('smart-insights').innerHTML = insights.length ? insights.map(ins => `
       <div class="insight-item">

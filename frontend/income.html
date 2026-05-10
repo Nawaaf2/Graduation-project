@@ -1,4 +1,5 @@
 <!DOCTYPE html>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 <html lang="ar" dir="rtl">
 <head>
   <meta charset="UTF-8">
@@ -18,7 +19,7 @@
 
       <div class="page-header">
         <div><h1 class="page-title green">➕ إضافة دخل</h1><p class="page-sub">سجّل مصدر دخلك</p></div>
-        <button class="btn-export" onclick="doExport()">📥 تصدير</button>
+        <button class="btn-export" onclick="doExport()"><i class="fa-solid fa-file-import"></i> تصدير</button>
       </div>
 
       <div id="success-msg" class="success-msg"></div>
@@ -45,7 +46,7 @@
         <button class="btn btn-green btn-full" onclick="saveIncome()">➕ حفظ الدخل</button>
 
         <div style="margin-top:34px">
-          <h3 style="font-size:16px;margin-bottom:14px;color:var(--text-2)">📋 الدخل المسجل</h3>
+          <h3 style="font-size:16px;margin-bottom:14px;color:var(--text-2)"><i class="fa-regular fa-clipboard"></i> الدخل المسجل</h3>
           <div id="income-list"><p style="color:var(--text-3)">جاري التحميل...</p></div>
         </div>
       </div>

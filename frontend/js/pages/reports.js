@@ -35,7 +35,7 @@ const CAT_ICONS = {'طعام':'🍽️','مواصلات':'🚗','تسوق':'🛍
     const monthMap = {};
     exp.forEach(e => { if(e.date){ const m=e.date.slice(0,7); monthMap[m]=(monthMap[m]||0)+parseFloat(e.amount||0); }});
     const months = Object.keys(monthMap).sort().slice(-6);
-    if (months.length > 1) {
+   if (months.length >= 1) {
       const canvas = document.getElementById('line-chart');
       const ctx    = canvas.getContext('2d');
       const W=canvas.width, H=canvas.height;

@@ -12,8 +12,8 @@ function updateBtn() {
   const isDark = getTheme() === 'dark';
   btn.innerHTML = `<span style="font-size:13px;color:var(--text-2)">${isDark?'داكن':'فاتح'}</span>
     <div class="theme-toggle-pill">
-      <span class="${isDark?'active-pill':''}">🌙</span>
-      <span class="${!isDark?'active-pill':''}">☀️</span>
+      <span class="${isDark?'active-pill':''}"><i class="fa-solid fa-moon"></i></span>
+      <span class="${!isDark?'active-pill':''}"><i class="fa-solid fa-sun" style="color: rgb(255, 212, 59);"></i></span>
     </div>`;
 }
 updateBtn();

@@ -24,26 +24,26 @@ function renderGoals() {
           <div style="width:48px;height:48px;background:rgba(0,0,0,0.1);border-radius:14px;display:flex;align-items:center;justify-content:center;font-size:26px">${g.icon||'🎯'}</div>
           <div>
             <div style="font-size:17px;font-weight:600">${g.name}</div>
-            <div style="font-size:12px;${urgency}">⏰ ${daysLeft===null?'لا يوجد موعد':daysLeft>0?daysLeft+' يوم متبقي':'انتهى الموعد'}</div>
+            <div style="font-size:12px;${urgency}"><i class="fa-solid fa-hourglass-half"></i> ${daysLeft===null?'لا يوجد موعد':daysLeft>0?daysLeft+' يوم متبقي':'انتهى الموعد'}</div>
           </div>
         </div>
         <div style="text-align:left">
           <div style="font-size:21px;font-weight:700;color:${g.color||'var(--accent)'}">${fmt(g.current||0)}</div>
           <div style="font-size:12px;color:var(--text-3)">من ${fmt(g.target)} ر.س</div>
-        </div>
+        </div
       </div>
       <div class="progress-bar"><div class="progress-fill" style="width:${pct}%;background:${g.color||'var(--accent)'}"></div></div>
       <div style="display:flex;justify-content:space-between;align-items:center;margin-top:6px">
         <span style="font-weight:600;color:${g.color||'var(--accent)'};font-size:14px">${pct.toFixed(1)}%</span>
         <span style="font-size:12px;color:var(--text-3)">متبقي ${fmt(parseFloat(g.target)-parseFloat(g.current||0))} ر.س</span>
         <div style="display:flex;gap:6px">
-          <button class="btn-icon" onclick="openDeposit(${g.id})">💰 إضافة</button>
-          <button class="btn-icon" onclick="editGoal(${g.id})">✏️</button>
-          <button class="btn-icon" style="color:var(--red)" onclick="delGoal(${g.id})">🗑️</button>
+          <button class="btn-icon" onclick="openDeposit(${g.id})"><i class="fa-solid fa-money-bill-wave" style="color: rgb(99, 230, 190);"></i> إضافة</button>
+          <button class="btn-icon" onclick="editGoal(${g.id})"><i class="fa-solid fa-pen-to-square"></i></button>
+          <button class="btn-icon" style="color:var(--red)" onclick="delGoal(${g.id})"><i class="fa-solid fa-trash-can"></i></button>
         </div>
       </div>
     </div>`;
-  }).join('') : '<div class="empty-state"><div class="empty-icon">🎯</div><p>لا توجد أهداف بعد</p></div>';
+  }).join('') : '<div class="empty-state"><div class="empty-icon"><i class="fa-solid fa-bullseye"></i></div><p>لا توجد أهداف بعد</p></div>';
   document.getElementById('st-count').textContent = allGoals.length;
   document.getElementById('st-saved').innerHTML   = `${fmt(saved)} <span class="stat-currency">ر.س</span>`;
   document.getElementById('st-pct').textContent   = target ? `${((saved/target)*100).toFixed(0)}%` : '0%';
@@ -51,15 +51,15 @@ function renderGoals() {
 
 async function addGoal() {
   const name       = document.getElementById('g-name').value.trim();
-  const icon       = document.getElementById('g-icon').value || '🎯';
+  const icon       ='🎯';
   const target     = parseFloat(document.getElementById('g-target').value);
   const current    = parseFloat(document.getElementById('g-current').value) || 0;
   const targetDate = document.getElementById('g-date').value;
   if (!name||!target||!targetDate) { alert('يرجى ملء جميع الحقول'); return; }
   try {
-    await Storage.addGoal({name, icon, target, current, targetDate, color:COLORS[Math.floor(Math.random()*COLORS.length)]});
+    await Storage.addGoal({name, target, current, targetDate, color:COLORS[Math.floor(Math.random()*COLORS.length)]});
     closeModal('add-modal');
-    ['g-name','g-icon','g-target','g-current','g-date'].forEach(id => document.getElementById(id).value = '');
+    ['g-name','g-target','g-current','g-date'].forEach(id => document.getElementById(id).value = '');
     await loadGoals();
   } catch(e) { alert(e.message); }
 }
@@ -82,7 +82,6 @@ function editGoal(id) {
   const g = allGoals.find(x => x.id===id); if (!g) return;
   document.getElementById('edit-id').value      = id;
   document.getElementById('edit-name').value    = g.name;
-  document.getElementById('edit-icon').value    = g.icon||'';
   document.getElementById('edit-target').value  = g.target;
   document.getElementById('edit-current').value = g.current||0;
   document.getElementById('edit-date').value    = g.targetDate||g.target_date||'';
@@ -95,7 +94,6 @@ async function saveEdit() {
   try {
     await Storage.updateGoal(id, {
       name:       document.getElementById('edit-name').value,
-      icon:       document.getElementById('edit-icon').value,
       target:     parseFloat(document.getElementById('edit-target').value),
       current:    parseFloat(document.getElementById('edit-current').value),
       targetDate: document.getElementById('edit-date').value || null,

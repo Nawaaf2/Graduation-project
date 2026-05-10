@@ -30,11 +30,11 @@ function renderList() {
       </div>
       <div style="display:flex;align-items:center;gap:8px;flex-shrink:0">
         <span style="font-size:15px;font-weight:700;color:var(--green)">+${fmt(i.amount)} ر.س</span>
-        <button class="btn-icon" onclick="editInc(${i.id})">✏️</button>
-        <button class="btn-icon" style="color:var(--red)" onclick="delInc(${i.id})">🗑️</button>
+        <button class="btn-icon" onclick="editInc(${i.id})"><i class="fa-solid fa-pen-to-square"></i></button>
+        <button class="btn-icon" style="color:var(--red)" onclick="delInc(${i.id})"><i class="fa-solid fa-trash-can"></i></button>
       </div>
     </div>`).join('')
-  : '<div class="empty-state"><div class="empty-icon">💰</div><p>لا توجد إدخالات بعد</p></div>';
+  : '<div class="empty-state"><div class="empty-icon"><i class="fa-solid fa-circle-plus"></i></div><p>لا توجد إدخالات بعد</p></div>';
 }
 
 async function saveIncome() {

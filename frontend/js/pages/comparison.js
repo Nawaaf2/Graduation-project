@@ -41,7 +41,7 @@ function diffBadge(a, b, invert = false) {
     const months = buildMonthOptions(exp);
     if (months.length < 1) {
       document.getElementById('compare-body').innerHTML =
-        '<div class="empty-state"><div class="empty-icon">📊</div><p>أضف مصاريف لأكثر من شهر لعرض المقارنة</p></div>';
+        '<div class="empty-state"><div class="empty-icon"><i class="fa-solid fa-chart-simple"></i></div><p>أضف مصاريف لأكثر من شهر لعرض المقارنة</p></div>';
       return;
     }
 
@@ -90,7 +90,7 @@ function diffBadge(a, b, invert = false) {
         const pA = (vA/maxVal)*100, pB = (vB/maxVal)*100;
         return `<div style="margin-bottom:14px">
           <div style="display:flex;justify-content:space-between;font-size:13px;margin-bottom:6px">
-            <span>${catIcons[cat]||'💰'} ${cat}</span>
+            <span>${catIcons[cat]||'<i class="fa-solid fa-sack-dollar" style="color: rgb(255, 212, 59);"></i>'} ${cat}</span>
             <div style="display:flex;gap:8px;align-items:center">
               <span style="color:${COLORS[i%COLORS.length]};font-weight:600">${fmt(vA)} ر.س</span>
               <span style="color:var(--text-3);font-size:11px">vs ${fmt(vB)} ر.س</span>
@@ -115,6 +115,6 @@ function diffBadge(a, b, invert = false) {
   } catch(e) {
     console.error(e);
     document.getElementById('compare-body').innerHTML =
-      '<div class="alert-card"><span>⚠️</span><div>تعذر جلب البيانات</div></div>';
+      '<div class="alert-card"><span><i class="fa-solid fa-triangle-exclamation" style="color: rgb(255, 212, 59);"></i></span><div>تعذر جلب البيانات</div></div>';
   }
 })();

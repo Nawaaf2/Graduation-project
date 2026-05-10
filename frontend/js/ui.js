@@ -4,7 +4,10 @@ const T = {dashboard:'لوحة التحكم',expenses:'إضافة مصروف',in
 function getTheme() { return localStorage.getItem('mufakkira_theme') || 'dark'; }
 function t(k)       { return T[k] || k; }
 function fmt(n)     { return Number(n||0).toLocaleString('ar-SA',{minimumFractionDigits:0,maximumFractionDigits:2}); }
-function fmtDate(d) { if(!d)return''; return new Date(d).toLocaleDateString('ar-SA',{year:'numeric',month:'short',day:'numeric'}); }
+
+function applyThemeAndLang() {
+  document.body.dataset.theme = getTheme();
+}
 
 function applyThemeAndLang() {
   document.body.dataset.theme = getTheme();
@@ -20,8 +23,8 @@ function _updateThemeBtn(btn, theme) {
   const isDark = (theme||getTheme())==='dark';
   btn.innerHTML = `<span style="font-size:13px;color:var(--text-2)">${isDark?t('dark'):t('light')}</span>
     <div class="theme-toggle-pill">
-      <span class="${isDark?'active-pill':''}">🌙</span>
-      <span class="${!isDark?'active-pill':''}">☀️</span>
+      <span class="${isDark?'active-pill':''}"><i class="fa-solid fa-moon"></i></span>
+      <span class="${!isDark?'active-pill':''}"><i class="fa-solid fa-sun" style="color: rgb(255, 212, 59);"></i></span>
     </div>`;
 }
 async function renderSidebar(activePage) {
@@ -29,17 +32,17 @@ async function renderSidebar(activePage) {
   if (!el) return;
   const isDark = getTheme()==='dark';
   const pages = [
-    {id:'dashboard',     href:'dashboard.html',     icon:'📊'},
-    {id:'expenses',      href:'expenses.html',      icon:'➖'},
-    {id:'income',        href:'income.html',        icon:'➕'},
-    {id:'categories',    href:'categories.html',    icon:'📁'},
-    {id:'goals',         href:'goals.html',         icon:'🎯'},
-    {id:'subscriptions', href:'subscriptions.html', icon:'🔄', badge:true},
-    {id:'reports',       href:'reports.html',       icon:'📈'},
-    {id:'comparison',    href:'comparison.html',    icon:'📊'},
-    {id:'analytics',     href:'analytics.html',     icon:'🔍'},
-    {id:'reminders',     href:'reminders.html',     icon:'🔔'},
-    {id:'settings',      href:'settings.html',      icon:'⚙️'},
+    {id:'dashboard',     href:'dashboard.html',     icon:'<i class="fa-solid fa-table-columns"></i>'},
+    {id:'expenses',      href:'expenses.html',      icon:'<i class="fa-solid fa-circle-minus" style="color: rgb(240, 32, 32);"></i>'},
+    {id:'income',        href:'income.html',        icon:'<i class="fa-solid fa-circle-plus" style="color: rgb(99, 230, 190);"></i>'},
+    {id:'categories',    href:'categories.html',    icon:'<i class="fa-solid fa-layer-group"></i>'},
+    {id:'goals',         href:'goals.html',         icon:'<i class="fa-solid fa-bullseye"></i>'},
+    {id:'subscriptions', href:'subscriptions.html', icon:'<i class="fa-solid fa-rotate"></i>', badge:true},
+    {id:'reports',       href:'reports.html',       icon:'<i class="fa-solid fa-chart-line"></i>'},
+    {id:'comparison',    href:'comparison.html',    icon:'<i class="fa-solid fa-chart-simple"></i>'},
+    {id:'analytics',     href:'analytics.html',     icon:'<i class="fa-solid fa-magnifying-glass-chart"></i>'},
+    {id:'reminders',     href:'reminders.html',     icon:'<i class="fa-solid fa-bell"></i>'},
+    {id:'settings',      href:'settings.html',      icon:'<i class="fa-solid fa-gear"></i>'},
   ];
   let dueSoon = 0;
   try {
@@ -49,7 +52,7 @@ async function renderSidebar(activePage) {
   } catch(e) {}
 
   el.innerHTML = `
-    <div class="sidebar-logo"><div class="sidebar-logo-icon">💰</div><span>مُفكّرة</span></div>
+    <div class="sidebar-logo"><div class="sidebar-logo-icon"><i class="fa-solid fa-sack-dollar"></i></div><span>مُفكّرة</span></div>
     <nav class="nav-menu">
       ${pages.map(p=>`
         <a href="${p.href}" class="nav-item ${activePage===p.id?'active':''}">
@@ -62,11 +65,11 @@ async function renderSidebar(activePage) {
       <button class="theme-toggle-btn" onclick="toggleTheme()">
         <span style="font-size:13px;color:var(--text-2)">${isDark?t('dark'):t('light')}</span>
         <div class="theme-toggle-pill">
-          <span class="${isDark?'active-pill':''}">🌙</span>
-          <span class="${!isDark?'active-pill':''}">☀️</span>
+          <span class="${isDark?'active-pill':''}"><i class="fa-solid fa-moon"></i></span>
+          <span class="${!isDark?'active-pill':''}"><i class="fa-solid fa-sun" style="color: rgb(255, 212, 59);"></i></span>
         </div>
       </button>
-<button class="btn-logout" onclick="logout()"><span>🚪</span><span>${t('logout')}</span></button>
+<button class="btn-logout" onclick="logout()"><span><i class="fa-solid fa-arrow-right-from-bracket" style="color: rgb(255, 0, 0);"></i></span><span>${t('logout')}</span></button>
     </div>`;
 }
 
