@@ -1,5 +1,6 @@
 package com.mufakkira.feature.auth;
 
+import java.util.UUID;
 import com.mufakkira.feature.category.Category;
 import com.mufakkira.feature.category.CategoryRepository;
 import com.mufakkira.shared.security.JwtUtil;
@@ -10,8 +11,12 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
+
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Map;
+
+import com.mufakkira.shared.config.EmailService;
 
 @RestController
 @RequestMapping("/api/auth")
@@ -22,6 +27,7 @@ public class AuthController {
     private final CategoryRepository categoryRepository;
     private final PasswordEncoder    passwordEncoder;
     private final JwtUtil            jwtUtil;
+    private final EmailService emailService;
 
     private static final List<Object[]> DEFAULT_CATEGORIES = List.of(
         new Object[]{"طعام",    "🍽️", "#e8634a"},
@@ -92,4 +98,46 @@ public class AuthController {
         @NotBlank private String email;
         @NotBlank private String password;
     }
+
+    // الخطوة 1: طلب reset
+@PostMapping("/forgot-password")
+public ResponseEntity<?> forgotPassword(@RequestBody Map<String, String> body) {
+    String email = body.get("email");
+    User user = userRepository.findByEmail(email).orElse(null);
+
+    if (user == null)
+        return ResponseEntity.ok(Map.of("message", "إذا كان البريد مسجلاً راح تصلك رسالة"));
+
+    String token = UUID.randomUUID().toString();
+    user.setResetToken(token);
+    user.setResetTokenExpiry(LocalDateTime.now().plusMinutes(30));
+    userRepository.save(user);
+
+    try {
+        emailService.sendResetEmail(email, token);
+    } catch (Exception e) {
+        return ResponseEntity.status(500).body(Map.of("error", "فشل إرسال الإيميل"));
+    }
+
+    return ResponseEntity.ok(Map.of("message", "تم الإرسال"));
+}
+
+// الخطوة 2: تغيير الباسورد بالـ token
+@PostMapping("/reset-password")
+public ResponseEntity<?> resetPassword(@RequestBody Map<String, String> body) {
+    String token    = body.get("token");
+    String password = body.get("password");
+
+    User user = userRepository.findByResetToken(token).orElse(null);
+
+    if (user == null || user.getResetTokenExpiry().isBefore(LocalDateTime.now()))
+        return ResponseEntity.badRequest().body(Map.of("error", "الرابط منتهي أو غير صحيح"));
+
+    user.setPassword(passwordEncoder.encode(password));
+    user.setResetToken(null);
+    user.setResetTokenExpiry(null);
+    userRepository.save(user);
+
+    return ResponseEntity.ok(Map.of("message", "تم تغيير كلمة المرور"));
+}
 }
