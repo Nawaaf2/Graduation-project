@@ -3,10 +3,10 @@
 <html lang="ar" dir="rtl">
 <head>
   <script>
-  if (localStorage.getItem('mufakkira_theme') === 'light') {
-    document.documentElement.classList.add('light');
-  }
-</script>
+    if (localStorage.getItem('mufakkira_theme') === 'light') {
+      document.documentElement.classList.add('light');
+    }
+  </script>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width,initial-scale=1.0">
   <title>الإعدادات | مفكرة المصاريف</title>
@@ -23,22 +23,18 @@
     <main class="main-content">
 
       <h1 class="page-title plain" style="margin-bottom:28px">⚙️ الإعدادات</h1>
-      <div id="success-msg" class="success-msg"></div>
 
-      <div class="setting-row"><span class="setting-label">الاسم</span><span class="setting-value" id="s-name">—</span></div>
-      <div class="setting-row"><span class="setting-label">البريد الإلكتروني</span><span class="setting-value" id="s-email">—</span></div>
-      <div class="setting-row"><span class="setting-label">العملة</span><span class="setting-value">ريال سعودي (ر.س)</span></div>
       <div class="setting-row">
         <span class="setting-label">المظهر</span>
         <button class="theme-toggle-btn" id="theme-btn" onclick="toggleTheme();updateBtn()">—</button>
       </div>
       <div style="display:flex;gap:8px;margin-top:8px">
-        <button class="btn-export" onclick="doExportExp()"><i class="fa-solid fa-file-import"></i> تصدير المصاريف</button>
-        <button class="btn-export" onclick="doExportInc()"><i class="fa-solid fa-file-import"></i> تصدير الدخل</button>
+        <button class="btn-export" onclick="doExportExp()"><i class="fa-solid fa-file-export"></i> تصدير المصاريف</button>
+        <button class="btn-export" onclick="doExportInc()"><i class="fa-solid fa-file-export"></i> تصدير الدخل</button>
       </div>
 
       <div style="margin-top:36px;padding-top:20px;border-top:1px solid var(--border)">
-        <button class="btn-outline" onclick="doLogout()" style="color:var(--red);border-color:rgba(239,68,68,0.4)">🚪 تسجيل الخروج</button>
+        <button class="btn-outline" onclick="logout()" style="color:var(--red);border-color:rgba(239,68,68,0.4)">🚪 تسجيل الخروج</button>
       </div>
 
     </main>

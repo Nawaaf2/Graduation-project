@@ -1,14 +1,9 @@
 // ===== ui.js — وظائف مشتركة =====
-const T = {dashboard:'لوحة التحكم',expenses:'إضافة مصروف',income:'إضافة دخل',categories:'التصنيفات',goals:'الأهداف المالية',subscriptions:'الاشتراكات',reports:'التقارير',comparison:'مقارنة الأشهر',analytics:'التحليلات',reminders:'التذكيرات',settings:'الإعدادات',logout:'تسجيل خروج',dark:'داكن',light:'فاتح',sar:'ر.س',confirm_del:'هل أنت متأكد من الحذف؟',no_data:'لا توجد بيانات'};
+const T = {dashboard:'لوحة التحكم',expenses:'إضافة مصروف',income:'إضافة دخل',categories:'التصنيفات',goals:'الأهداف المالية',subscriptions:'الاشتراكات',reports:'التقارير',comparison:'مقارنة الأشهر',analytics:'التحليلات',reminders:'التذكيرات',account:'حسابي',settings:'الإعدادات',logout:'تسجيل خروج',dark:'داكن',light:'فاتح',sar:'ر.س',confirm_del:'هل أنت متأكد من الحذف؟',no_data:'لا توجد بيانات'};
 
 function getTheme() { return localStorage.getItem('mufakkira_theme') || 'dark'; }
 function t(k)       { return T[k] || k; }
 function fmt(n)     { return Number(n||0).toLocaleString('ar-SA',{minimumFractionDigits:0,maximumFractionDigits:2}); }
-
-function applyThemeAndLang() {
-  document.body.dataset.theme = getTheme();
-  document.documentElement.classList.toggle('light', getTheme() === 'light');
-}
 
 function applyThemeAndLang() {
   const theme = getTheme();
@@ -32,6 +27,7 @@ function _updateThemeBtn(btn, theme) {
       <span class="${!isDark?'active-pill':''}"><i class="fa-solid fa-sun" style="color: rgb(255, 212, 59);"></i></span>
     </div>`;
 }
+
 async function renderSidebar(activePage) {
   const el = document.getElementById('sidebar');
   if (!el) return;
@@ -47,6 +43,7 @@ async function renderSidebar(activePage) {
     {id:'comparison',    href:'comparison.html',    icon:'<i class="fa-solid fa-chart-simple"></i>'},
     {id:'analytics',     href:'analytics.html',     icon:'<i class="fa-solid fa-magnifying-glass-chart"></i>'},
     {id:'reminders',     href:'reminders.html',     icon:'<i class="fa-solid fa-bell"></i>'},
+    {id:'account',       href:'account.html',       icon:'<i class="fa-solid fa-user"></i>'},
     {id:'settings',      href:'settings.html',      icon:'<i class="fa-solid fa-gear"></i>'},
   ];
   let dueSoon = 0;
@@ -74,7 +71,7 @@ async function renderSidebar(activePage) {
           <span class="${!isDark?'active-pill':''}"><i class="fa-solid fa-sun" style="color: rgb(255, 212, 59);"></i></span>
         </div>
       </button>
-<button class="btn-logout" onclick="logout()"><span><i class="fa-solid fa-arrow-right-from-bracket" style="color: rgb(255, 0, 0);"></i></span><span>${t('logout')}</span></button>
+      <button class="btn-logout" onclick="logout()"><span><i class="fa-solid fa-arrow-right-from-bracket" style="color: rgb(255, 0, 0);"></i></span><span>${t('logout')}</span></button>
     </div>`;
 }
 

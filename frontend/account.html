@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+<html lang="ar" dir="rtl">
+<head>
+  <script>
+    if (localStorage.getItem('mufakkira_theme') === 'light') {
+      document.documentElement.classList.add('light');
+    }
+  </script>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1.0">
+  <title>حسابي | مفكرة المصاريف</title>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Kufi+Arabic:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="assets/styles.css">
+</head>
+<body>
+  <div class="noise-overlay"></div>
+  <div class="glow-orb-1"></div>
+  <div class="glow-orb-2"></div>
+
+  <div class="app-layout">
+    <aside class="sidebar" id="sidebar"></aside>
+    <main class="main-content">
+
+      <h1 class="page-title plain" style="margin-bottom:28px">👤 حسابي</h1>
+
+      <div id="success-msg" class="success-msg"></div>
+      <div id="error-msg" class="error-msg"></div>
+
+      <div class="setting-row"><span class="setting-label">الاسم</span><span class="setting-value" id="a-name">—</span></div>
+      <div class="setting-row"><span class="setting-label">البريد الإلكتروني</span><span class="setting-value" id="a-email">—</span></div>
+
+      <div style="margin-top:24px">
+        <button class="btn-export" onclick="doResetPassword()">
+          <i class="fa-solid fa-lock"></i> تغيير كلمة المرور
+        </button>
+      </div>
+
+    </main>
+  </div>
+
+  <script src="js/storage.js"></script>
+  <script src="js/ui.js"></script>
+  <script src="js/pages/account.js"></script>
+</body>
+</html>
