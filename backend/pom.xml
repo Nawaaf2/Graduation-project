@@ -28,10 +28,6 @@
       <artifactId>spring-boot-starter-actuator</artifactId>
     </dependency>
 
-<<<<<<< HEAD
-=======
-
->>>>>>> 7e38dff4893ee141a144b26b9e6f1aa12fd70d6d
     <!-- Web — لبناء REST API -->
     <dependency>
       <groupId>org.springframework.boot</groupId>
@@ -56,15 +52,12 @@
       <artifactId>spring-boot-starter-validation</artifactId>
     </dependency>
 
-<<<<<<< HEAD
-    <!-- Mail — لإرسال الإيميلات عبر SMTP (Resend) -->
+    <!-- Mail — لإرسال الإيميلات عبر Gmail SMTP -->
     <dependency>
       <groupId>org.springframework.boot</groupId>
       <artifactId>spring-boot-starter-mail</artifactId>
     </dependency>
 
-=======
->>>>>>> 7e38dff4893ee141a144b26b9e6f1aa12fd70d6d
     <!-- PostgreSQL Driver -->
     <dependency>
       <groupId>org.postgresql</groupId>
@@ -99,7 +92,6 @@
     </dependency>
 
     <!-- Lombok — يختصر الكود المكرر -->
-<<<<<<< HEAD
     <dependency>
       <groupId>org.projectlombok</groupId>
       <artifactId>lombok</artifactId>
@@ -107,26 +99,6 @@
       <scope>provided</scope>
     </dependency>
 
-=======
-   <dependency>
-    <groupId>org.projectlombok</groupId>
-    <artifactId>lombok</artifactId>
-    <version>1.18.34</version>
-    <scope>provided</scope>
-</dependency>
-    <!-- SendGrid — لإرسال الإيميلات -->
-<dependency>
-    <groupId>com.sendgrid</groupId>
-    <artifactId>sendgrid-java</artifactId>
-    <version>4.10.1</version>
-</dependency>
-
-<dependency>
-    <groupId>me.paulschwarz</groupId>
-    <artifactId>spring-dotenv</artifactId>
-    <version>4.0.0</version>
-</dependency>
->>>>>>> 7e38dff4893ee141a144b26b9e6f1aa12fd70d6d
   </dependencies>
 
   <build>
@@ -145,7 +117,6 @@
       </plugin>
 
       <plugin>
-<<<<<<< HEAD
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-compiler-plugin</artifactId>
         <version>3.13.0</version>
@@ -161,23 +132,6 @@
           </annotationProcessorPaths>
         </configuration>
       </plugin>
-=======
-    <groupId>org.apache.maven.plugins</groupId>
-    <artifactId>maven-compiler-plugin</artifactId>
-<version>3.13.0</version>
-    <configuration>
-        <source>21</source>
-        <target>21</target>
-        <annotationProcessorPaths>
-            <path>
-                <groupId>org.projectlombok</groupId>
-                <artifactId>lombok</artifactId>
-                <version>1.18.34</version>
-            </path>
-        </annotationProcessorPaths>
-    </configuration>
-</plugin>
->>>>>>> 7e38dff4893ee141a144b26b9e6f1aa12fd70d6d
     </plugins>
   </build>
 
