@@ -1,24 +1,22 @@
 package com.mufakkira.shared.config;
 
-import jakarta.mail.MessagingException;
-import jakarta.mail.internet.MimeMessage;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.mail.javamail.JavaMailSender;
-import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Service;
-import java.io.UnsupportedEncodingException;
+import java.net.URI;
+import java.net.http.HttpClient;
+import java.net.http.HttpRequest;
+import java.net.http.HttpResponse;
 
 @Service
 public class EmailService {
 
-    @Autowired
-    private JavaMailSender mailSender;
+    @Value("${resend.api.key}")
+    private String apiKey;
 
     @Value("${spring.mail.from}")
     private String fromEmail;
 
-    public void sendResetEmail(String toEmail, String token) throws MessagingException, UnsupportedEncodingException {
+    public void sendResetEmail(String toEmail, String token) throws Exception {
         System.out.println("====== فحص عملية الإرسال ======");
         System.out.println("1. إيميل المرسل: " + fromEmail);
         System.out.println("2. إيميل المستقبل: " + toEmail);
@@ -33,15 +31,28 @@ public class EmailService {
             "<p style='color:#999;margin-top:16px;'>الرابط صالح لمدة 30 دقيقة فقط.</p>" +
             "</div>";
 
-        MimeMessage message = mailSender.createMimeMessage();
-        MimeMessageHelper helper = new MimeMessageHelper(message, true, "UTF-8");
+        String body = "{"
+            + "\"from\":\"مُفكّرة <" + fromEmail + ">\","
+            + "\"to\":[\"" + toEmail + "\"],"
+            + "\"subject\":\"إعادة تعيين كلمة المرور\","
+            + "\"html\":\"" + htmlContent.replace("\"", "\\\"") + "\""
+            + "}";
 
-        helper.setFrom(fromEmail, "مُفكّرة");
-        helper.setTo(toEmail);
-        helper.setSubject("إعادة تعيين كلمة المرور");
-        helper.setText(htmlContent, true);
+        HttpClient client = HttpClient.newHttpClient();
+        HttpRequest request = HttpRequest.newBuilder()
+            .uri(URI.create("https://api.resend.com/emails"))
+            .header("Authorization", "Bearer " + apiKey)
+            .header("Content-Type", "application/json")
+            .POST(HttpRequest.BodyPublishers.ofString(body))
+            .build();
 
-        mailSender.send(message);
+        HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
+
+        System.out.println("3. Response: " + response.statusCode() + " - " + response.body());
+
+        if (response.statusCode() != 200 && response.statusCode() != 201) {
+            throw new RuntimeException("فشل إرسال الإيميل: " + response.body());
+        }
 
         System.out.println("3. تم الإرسال بنجاح");
         System.out.println("==============================");
