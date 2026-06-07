@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+<html lang="ar" dir="rtl">
+<head>
+  <script>
+  if (localStorage.getItem('mufakkira_theme') === 'light') {
+    document.documentElement.classList.add('light');
+  }
+</script>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1.0">
+  <title>تسجيل الدخول | مفكرة المصاريف</title>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Kufi+Arabic:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="assets/styles.css">
+</head>
+<body>
+  <a href="index.html" style="position:fixed;top:20px;right:20px;z-index:999;display:flex;align-items:center;gap:6px;font-family:'Noto Kufi Arabic',sans-serif;font-size:14px;color:var(--text-2);text-decoration:none;background:var(--surface);border:1px solid var(--border);padding:8px 16px;border-radius:10px;transition:all 0.2s;" onmouseover="this.style.borderColor='var(--accent)'" onmouseout="this.style.borderColor='var(--border)'">
+  <i class="fa-solid fa-arrow-right"></i> الصفحة الرئيسية
+</a>
+  <div class="noise-overlay"></div>
+  <div class="glow-orb-1"></div>
+  <div class="glow-orb-2"></div>
+
+  <div class="auth-wrapper">
+    <div class="auth-card">
+      <div style="text-align:center;margin-bottom:32px">
+        <div class="auth-logo"><i class="fa-solid fa-sack-dollar"></i></div>
+        <h1 class="auth-title">مُفكّرة المصاريف</h1>
+        <p class="auth-sub">سجّل مصاريفك وتابع ميزانيتك</p>
+      </div>
+      <div id="error-msg" class="error-msg"></div>
+      <div style="display:flex;flex-direction:column;gap:14px">
+        <div class="form-group">
+          <label class="form-label">البريد الإلكتروني</label>
+          <input type="email" class="form-input" id="email" placeholder="example@email.com">
+        </div>
+        <div class="form-group">
+          <label class="form-label">كلمة المرور</label>
+          <input type="password" class="form-input" id="password" placeholder="••••••••">
+        </div>
+        <div style="text-align:left; margin-top:-6px;">
+         <a href="reset-password.html" class="link" style="font-size:13px;">نسيت كلمة المرور؟</a>
+        </div>
+        <button class="btn btn-accent btn-full" id="login-btn" onclick="doLogin()">تسجيل الدخول</button>
+      </div>
+      
+      <p style="text-align:center;margin-top:22px;font-size:14px;color:var(--text-3)">
+        ما عندك حساب؟ <a href="register.html" class="link">سجّل الآن</a>
+      </p>
+    </div>
+  </div>
+
+  <script src="js/storage.js"></script>
+  <script src="js/ui.js"></script>
+  <script src="js/pages/login.js"></script>
+</body>
+</html>
