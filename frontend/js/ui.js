@@ -1,5 +1,5 @@
 // ===== ui.js — وظائف مشتركة =====
-const T = {dashboard:'لوحة التحكم',expenses:'إضافة مصروف',income:'إضافة دخل',categories:'التصنيفات',goals:'الأهداف المالية',subscriptions:'الاشتراكات',reports:'التقارير',comparison:'مقارنة الأشهر',analytics:'التحليلات',reminders:'التذكيرات',account:'حسابي',settings:'الإعدادات',logout:'تسجيل خروج',dark:'داكن',light:'فاتح',sar:'ر.س',confirm_del:'هل أنت متأكد من الحذف؟',no_data:'لا توجد بيانات'};
+const T = {dashboard:'لوحة التحكم',expenses:'إضافة مصروف',income:'إضافة دخل',categories:'التصنيفات',goals:'الأهداف المالية',subscriptions:'الاشتراكات',reports:'التقارير',comparison:'مقارنة الأشهر',analytics:'التحليلات',reminders:'التذكيرات',settings:'الإعدادات',logout:'تسجيل خروج',dark:'داكن',light:'فاتح',sar:'ر.س',confirm_del:'هل أنت متأكد من الحذف؟',no_data:'لا توجد بيانات'};
 
 function getTheme() { return localStorage.getItem('mufakkira_theme') || 'dark'; }
 function t(k)       { return T[k] || k; }
@@ -32,6 +32,8 @@ async function renderSidebar(activePage) {
   const el = document.getElementById('sidebar');
   if (!el) return;
   const isDark = getTheme()==='dark';
+  const user   = getCurrentUser();
+
   const pages = [
     {id:'dashboard',     href:'dashboard.html',     icon:'<i class="fa-solid fa-table-columns"></i>'},
     {id:'expenses',      href:'expenses.html',      icon:'<i class="fa-solid fa-circle-minus" style="color: rgb(240, 32, 32);"></i>'},
@@ -43,15 +45,17 @@ async function renderSidebar(activePage) {
     {id:'comparison',    href:'comparison.html',    icon:'<i class="fa-solid fa-chart-simple"></i>'},
     {id:'analytics',     href:'analytics.html',     icon:'<i class="fa-solid fa-magnifying-glass-chart"></i>'},
     {id:'reminders',     href:'reminders.html',     icon:'<i class="fa-solid fa-bell"></i>'},
-    {id:'account',       href:'account.html',       icon:'<i class="fa-solid fa-user"></i>'},
     {id:'settings',      href:'settings.html',      icon:'<i class="fa-solid fa-gear"></i>'},
   ];
+
   let dueSoon = 0;
   try {
     const subs = await Storage.getSubscriptions();
     const today = new Date();
     dueSoon = (subs||[]).filter(s=>{ const d=Math.ceil((new Date(s.renewal)-today)/86400000); return d>=0&&d<=7; }).length;
   } catch(e) {}
+
+  const initials = user?.name ? user.name.trim().charAt(0) : '؟';
 
   el.innerHTML = `
     <div class="sidebar-logo"><div class="sidebar-logo-icon"><i class="fa-solid fa-sack-dollar"></i></div><span>مُفكّرة</span></div>
@@ -71,6 +75,15 @@ async function renderSidebar(activePage) {
           <span class="${!isDark?'active-pill':''}"><i class="fa-solid fa-sun" style="color: rgb(255, 212, 59);"></i></span>
         </div>
       </button>
+
+      <a href="account.html" class="sidebar-profile-card ${activePage==='account'?'active':''}">
+        <div class="sidebar-profile-avatar">${initials}</div>
+        <div class="sidebar-profile-info">
+          <span class="sidebar-profile-name">${user?.name || '—'}</span>
+          <span class="sidebar-profile-email">${user?.email || '—'}</span>
+        </div>
+      </a>
+
       <button class="btn-logout" onclick="logout()"><span><i class="fa-solid fa-arrow-right-from-bracket" style="color: rgb(255, 0, 0);"></i></span><span>${t('logout')}</span></button>
     </div>`;
 }
