@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Service;
+import java.io.UnsupportedEncodingException;
 
 @Service
 public class EmailService {
@@ -17,7 +18,7 @@ public class EmailService {
     @Value("${spring.mail.from}")
     private String fromEmail;
 
-    public void sendResetEmail(String toEmail, String token) throws MessagingException {
+    public void sendResetEmail(String toEmail, String token) throws MessagingException, UnsupportedEncodingException {
         System.out.println("====== فحص عملية الإرسال ======");
         System.out.println("1. إيميل المرسل: " + fromEmail);
         System.out.println("2. إيميل المستقبل: " + toEmail);
