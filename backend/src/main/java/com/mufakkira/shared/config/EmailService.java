@@ -10,7 +10,7 @@ import java.net.http.HttpResponse;
 @Service
 public class EmailService {
 
-    @Value("${resend.api.key}")
+    @Value("${mailersend.api.key}")
     private String apiKey;
 
     @Value("${spring.mail.from}")
@@ -32,15 +32,15 @@ public class EmailService {
             "</div>";
 
         String body = "{"
-            + "\"from\":\"مُفكّرة <" + fromEmail + ">\","
-            + "\"to\":[\"" + toEmail + "\"],"
+            + "\"from\":{\"email\":\"" + fromEmail + "\",\"name\":\"مُفكّرة\"},"
+            + "\"to\":[{\"email\":\"" + toEmail + "\"}],"
             + "\"subject\":\"إعادة تعيين كلمة المرور\","
             + "\"html\":\"" + htmlContent.replace("\"", "\\\"") + "\""
             + "}";
 
         HttpClient client = HttpClient.newHttpClient();
         HttpRequest request = HttpRequest.newBuilder()
-            .uri(URI.create("https://api.resend.com/emails"))
+            .uri(URI.create("https://api.mailersend.com/v1/email"))
             .header("Authorization", "Bearer " + apiKey)
             .header("Content-Type", "application/json")
             .POST(HttpRequest.BodyPublishers.ofString(body))
@@ -50,7 +50,7 @@ public class EmailService {
 
         System.out.println("3. Response: " + response.statusCode() + " - " + response.body());
 
-        if (response.statusCode() != 200 && response.statusCode() != 201) {
+        if (response.statusCode() != 200 && response.statusCode() != 202) {
             throw new RuntimeException("فشل إرسال الإيميل: " + response.body());
         }
 
