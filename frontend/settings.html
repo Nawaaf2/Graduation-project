@@ -24,16 +24,71 @@
 
       <h1 class="page-title plain" style="margin-bottom:28px">⚙️ الإعدادات</h1>
 
+      <div id="success-msg" class="success-msg"></div>
+      <div id="error-msg" class="error-msg"></div>
+
+      <!-- المظهر -->
       <div class="setting-row">
         <span class="setting-label">المظهر</span>
         <button class="theme-toggle-btn" id="theme-btn" onclick="toggleTheme();updateBtn()">—</button>
       </div>
-      <div style="display:flex;gap:8px;margin-top:8px">
-        <button class="btn-export" onclick="doExportExp()"><i class="fa-solid fa-file-export"></i> تصدير المصاريف</button>
-        <button class="btn-export" onclick="doExportInc()"><i class="fa-solid fa-file-export"></i> تصدير الدخل</button>
+
+      <!-- حد التحذير للرصيد -->
+      <div class="setting-row" style="gap:12px">
+        <div>
+          <div class="setting-label">حد التحذير للرصيد المنخفض</div>
+          <div style="font-size:12px;color:var(--text-3);margin-top:3px">حذّرني لما الرصيد يقل عن هذه النسبة من دخلي</div>
+        </div>
+        <div style="display:flex;align-items:center;gap:8px;flex-shrink:0">
+          <input type="number" id="balance-threshold" class="form-input" min="1" max="99"
+            style="width:72px;text-align:center;padding:8px 10px" placeholder="20">
+          <span style="color:var(--text-2);font-size:13px">%</span>
+          <button class="btn-icon" onclick="saveThreshold()">حفظ</button>
+        </div>
       </div>
 
-      <div style="margin-top:36px;padding-top:20px;border-top:1px solid var(--border)">
+      <!-- الميزانية الشهرية -->
+      <div class="setting-row" style="gap:12px">
+        <div>
+          <div class="setting-label">الميزانية الشهرية</div>
+          <div style="font-size:12px;color:var(--text-3);margin-top:3px">سقف المصاريف في الشهر — يظهر تحذير لما تقترب منه</div>
+        </div>
+        <div style="display:flex;align-items:center;gap:8px;flex-shrink:0">
+          <input type="number" id="monthly-budget" class="form-input" min="0"
+            style="width:110px;text-align:center;padding:8px 10px" placeholder="0">
+          <span style="color:var(--text-2);font-size:13px">ر.س</span>
+          <button class="btn-icon" onclick="saveBudget()">حفظ</button>
+        </div>
+      </div>
+
+      <!-- تصدير البيانات -->
+      <div class="setting-row">
+        <span class="setting-label">تصدير البيانات</span>
+      </div>
+      <div style="display:flex;gap:8px;margin-top:4px;flex-wrap:wrap">
+        <button class="btn-export" onclick="doExportAll()"><i class="fa-solid fa-file-export"></i> تصدير الكل</button>
+        <button class="btn-export" onclick="doExportExp()"><i class="fa-solid fa-file-export"></i> المصاريف</button>
+        <button class="btn-export" onclick="doExportInc()"><i class="fa-solid fa-file-export"></i> الدخل</button>
+      </div>
+
+      <!-- حذف جميع البيانات -->
+      <div style="margin-top:28px;padding-top:20px;border-top:1px solid var(--border)">
+        <div style="font-size:13px;color:var(--text-2);margin-bottom:10px;font-weight:500">منطقة الخطر</div>
+        <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px">
+          <div>
+            <div class="setting-label" style="color:var(--red)">حذف جميع البيانات</div>
+            <div style="font-size:12px;color:var(--text-3);margin-top:3px">يحذف كل المصاريف والدخل والأهداف والاشتراكات — لا يمكن التراجع</div>
+          </div>
+          <button id="delete-btn" class="btn-outline"
+            style="color:var(--red);border-color:rgba(239,68,68,0.4);flex-shrink:0"
+            onclick="handleDeleteAll()">
+            <i class="fa-solid fa-trash"></i> حذف الكل
+          </button>
+        </div>
+      </div>
+
+      <!-- تسجيل الخروج -->
+      <div style="margin-top:20px;padding-top:20px;border-top:1px solid var(--border)">
         <button class="btn-outline" onclick="logout()" style="color:var(--red);border-color:rgba(239,68,68,0.4)">🚪 تسجيل الخروج</button>
       </div>
 

@@ -3,26 +3,46 @@ const user = checkAuth();
 if (!user) throw new Error('not logged in');
 
 document.getElementById('welcome-title').textContent = `مرحباً، ${user.name} 👋`;
-// تنبيه الرصيد
-async function checkBalanceWarning() {
-  try {
-    const data = await Storage.getDashboard();
-    if (!data) return;
-    const totalIncome = parseFloat(data.totalIncome) || 0;
-    const balance = parseFloat(data.balance) || 0;
-    if (totalIncome > 0 && (balance / totalIncome) * 100 < 20) {
-      const alertsEl = document.getElementById('alerts-section');
-      const warning = document.createElement('div');
-      warning.className = 'alert-card';
-      warning.innerHTML = `<span style="font-size:22px"><i class="fa-solid fa-triangle-exclamation" style="color:rgb(245,158,11)"></i></span>
-        <div>تنبيه: رصيدك أقل من 20% من دخلك! تبقى <strong>${fmt(balance)} ر.س</strong></div>`;
-      alertsEl.prepend(warning);
-    }
-  } catch(e) {}
-}
-checkBalanceWarning();
 
 const CAT_ICONS_DEFAULT = {'طعام':'🍽️','مواصلات':'🚗','تسوق':'🛍️','فواتير':'📄','ترفيه':'🎬','صحة':'💊','تعليم':'📚','أخرى':'📌'};
+
+// ── تنبيهات الرصيد والميزانية ──
+function checkWarnings(data) {
+  const alertsEl = document.getElementById('alerts-section');
+
+  // حد التحذير للرصيد
+  const threshold  = parseFloat(localStorage.getItem('mufakkira_balance_threshold')) || 20;
+  const totalIncome = parseFloat(data.totalIncome) || 0;
+  const balance     = parseFloat(data.balance)     || 0;
+
+  if (totalIncome > 0 && (balance / totalIncome) * 100 < threshold) {
+    const w = document.createElement('div');
+    w.className = 'alert-card';
+    w.innerHTML = `<span style="font-size:22px"><i class="fa-solid fa-triangle-exclamation" style="color:rgb(245,158,11)"></i></span>
+      <div>تنبيه: رصيدك أقل من ${threshold}% من دخلك! تبقى <strong>${fmt(balance)} ر.س</strong></div>`;
+    alertsEl.prepend(w);
+  }
+
+  // الميزانية الشهرية
+  const budget  = parseFloat(localStorage.getItem('mufakkira_monthly_budget')) || 0;
+  const monthly = parseFloat(data.monthly) || 0;
+
+  if (budget > 0) {
+    if (monthly >= budget) {
+      const w = document.createElement('div');
+      w.className = 'alert-card';
+      w.innerHTML = `<span style="font-size:22px"><i class="fa-solid fa-circle-exclamation" style="color:var(--red)"></i></span>
+        <div>تجاوزت ميزانيتك الشهرية! صرفت <strong>${fmt(monthly)} ر.س</strong> من أصل ${fmt(budget)} ر.س</div>`;
+      alertsEl.prepend(w);
+    } else if (monthly >= budget * 0.85) {
+      const w = document.createElement('div');
+      w.className = 'alert-card';
+      w.innerHTML = `<span style="font-size:22px"><i class="fa-solid fa-triangle-exclamation" style="color:rgb(245,158,11)"></i></span>
+        <div>اقتربت من ميزانيتك الشهرية — صرفت <strong>${fmt(monthly)} ر.س</strong> من أصل ${fmt(budget)} ر.س</div>`;
+      alertsEl.prepend(w);
+    }
+  }
+}
 
 (async () => {
   renderSidebar('dashboard');
@@ -34,7 +54,7 @@ const CAT_ICONS_DEFAULT = {'طعام':'🍽️','مواصلات':'🚗','تسو�
     document.getElementById('s-income').innerHTML   = `${fmt(data.totalIncome)} <span class="stat-currency">ر.س</span>`;
     document.getElementById('s-expenses').innerHTML = `${fmt(data.totalExpenses)} <span class="stat-currency">ر.س</span>`;
     document.getElementById('s-balance').innerHTML  = `${fmt(data.balance)} <span class="stat-currency">ر.س</span>`;
-    document.getElementById('s-balance').style.color = parseFloat(data.balance)>=0?'var(--green)':'var(--red)';
+    document.getElementById('s-balance').style.color = parseFloat(data.balance) >= 0 ? 'var(--green)' : 'var(--red)';
     document.getElementById('s-monthly').innerHTML  = `${fmt(data.monthly)} <span class="stat-currency">ر.س</span>`;
 
     if (data.dueSoon > 0) {
@@ -46,6 +66,8 @@ const CAT_ICONS_DEFAULT = {'طعام':'🍽️','مواصلات':'🚗','تسو�
           </div>
         </div>`;
     }
+
+    checkWarnings(data);
 
     const goalsEl = document.getElementById('goals-preview');
     if (data.goals?.length) {
@@ -90,7 +112,7 @@ const CAT_ICONS_DEFAULT = {'طعام':'🍽️','مواصلات':'🚗','تسو�
   } catch(e) {
     console.error(e);
     document.getElementById('recent-list').innerHTML = `
-      <div class="alert-card"><span><i class="fa-solid fa-triangle-exclamation" style="color: rgb(255, 212, 59);"></span>
+      <div class="alert-card"><span><i class="fa-solid fa-triangle-exclamation" style="color: rgb(255, 212, 59);"></i></span>
         <div>تعذر الاتصال بالسيرفر — تأكد إن الـ Backend شغّال على المنفذ 8080</div>
       </div>`;
   }
