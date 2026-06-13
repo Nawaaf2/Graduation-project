@@ -1,4 +1,4 @@
-package main.java.com.mufakkira.feature.expense;
+package com.mufakkira.feature.expense;
 import lombok.Data;
 
 @Data
