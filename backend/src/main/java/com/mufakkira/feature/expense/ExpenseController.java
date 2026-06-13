@@ -8,6 +8,8 @@ import jakarta.validation.Valid;
 import jakarta.validation.constraints.*;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
+import main.java.com.mufakkira.feature.expense.AutoImportRequest;
+
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import java.math.BigDecimal;
@@ -114,4 +116,54 @@ public class ExpenseController {
         private String notes;
         private LocalDate date;
     }
+    @PostMapping("/auto-import")
+public ResponseEntity<?> autoImport(
+        @RequestBody AutoImportRequest req,
+        @RequestHeader("X-Import-Key") String importKey) {
+
+    // تحقق من المفتاح السري
+    String validKey = System.getenv("IMPORT_SECRET_KEY");
+    if (validKey == null || !validKey.equals(importKey)) {
+        return ResponseEntity.status(401).body(Map.of("error", "مفتاح غير صحيح"));
+    }
+
+    // اجيب المستخدم عن طريق الإيميل
+    User user = userRepo.findByEmail(req.getEmail()).orElse(null);
+    if (user == null) {
+        return ResponseEntity.badRequest().body(Map.of("error", "المستخدم غير موجود"));
+    }
+
+    Long userId = user.getId();
+    BigDecimal amount = BigDecimal.valueOf(req.getAmount());
+
+    // نفس منطق التحقق من الرصيد الموجود
+    BigDecimal totalIncome   = incomeRepo.sumByUserId(userId);
+    BigDecimal totalExpenses = expenseRepo.sumByUserId(userId);
+    if (totalIncome   == null) totalIncome   = BigDecimal.ZERO;
+    if (totalExpenses == null) totalExpenses = BigDecimal.ZERO;
+
+    BigDecimal balance = totalIncome.subtract(totalExpenses);
+
+    if (amount.compareTo(balance) > 0) {
+        return ResponseEntity.badRequest().body(
+            Map.of("error", "الرصيد غير كافٍ، رصيدك الحالي " + balance + " ر.س"));
+    }
+
+    // احفظ المصروف
+    Expense e = new Expense();
+    e.setUser(user);
+    e.setCategory("Apple Pay");
+    e.setAmount(amount);
+    e.setDescription(req.getMerchant());
+    e.setNotes("مستورد تلقائياً من الجوال");
+    e.setDate(LocalDate.parse(req.getDate()));
+
+    expenseRepo.save(e);
+
+    return ResponseEntity.ok(Map.of(
+        "message", "✅ تم حفظ المصروف تلقائياً",
+        "amount", amount,
+        "merchant", req.getMerchant()
+    ));
+}
 }
